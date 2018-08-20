@@ -1,0 +1,320 @@
+" Vimrc - A New Hope
+" 
+" Author: Jan Van Uytven
+" Date: 2015-04-01
+
+"-------------------------------------------------------------------------------
+" Keybinds
+"-------------------------------------------------------------------------------
+
+" t + w	Insert type for toplevel declaration
+" t + q	Query type of expression under cursor
+" t + s	Case split expression under cursor
+" t + e	Erase type query
+" a + =	Align on equal sign
+" a + -	Align on case match
+" Ctrl + x + o	Tab complete under cursor
+" \ + t	Open fuzzy file finder
+" \ + x Open file explorer
+" \ + t	Open fuzzy file finder
+" \ + c + Space	Toggle comment of text under cursor
+" \ + c + s	Toggle “sexy” comment of text
+" \ + p SoftPencil mode 
+
+"-------------------------------------------------------------------------------
+" No vi, only vim
+"-------------------------------------------------------------------------------
+set nocompatible                         " be iMproved
+
+"-------------------------------------------------------------------------------
+" Vundle config
+"-------------------------------------------------------------------------------
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim        " Set runtime path for Vundle
+call vundle#begin()
+" call vundle#begin('~/some/path/to/plugin_dir')
+Plugin 'VundleVim/Vundle.vim'               " Vundle manages Vundle, reqr
+
+" Set up plugins here.  Can specify URL or a git repo
+" For GitHub repos, can omit the URL and use git repo name only
+"
+" >>> vim-fugitive ("The" git plugin)
+Plugin 'tpope/vim-fugitive.git'
+
+" >>> Theme scroller (Use :SCROLL + up/down keys to browse color schemes
+Plugin 'vim-scripts/ScrollColors'
+
+" >>> Ctrl-P Fuzzy Finder
+Plugin 'ctrlpvim/ctrlp.vim'
+
+" >>> Nerdtree ♡  
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'scrooloose/nerdcommenter'
+
+" >>> vim-pencil for story writing
+Plugin 'reedes/vim-pencil'
+
+" >>> Syntastic - syntax checker
+Plugin 'scrooloose/syntastic'
+
+" >>> HaXe Plugins
+Plugin 'jdonaldson/vaxe'
+
+" >>> PureScript"
+Plugin 'raichoo/purescript-vim'
+
+" >>> Ruby"
+Plugin 'vim-ruby/vim-ruby'
+
+" >>> Rust"
+Plugin 'rust-lang/rust.vim'
+Plugin 'racer-rust/vim-racer'
+
+" >>> Haskell
+Plugin 'eagletmt/ghcmod-vim'
+Plugin 'eagletmt/neco-ghc'
+
+" >>> Hashicorp tools
+Plugin 'hashivim/vim-hashicorp-tools'
+
+" >>> Docker
+Plugin 'ekalinin/Dockerfile.vim'
+
+" >>> Utility libs
+Plugin 'tomtom/tlib_vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+
+" >>> Snippets
+Plugin 'garbas/vim-snipmate'
+
+" >>> Smart Tabs
+Plugin 'godlygeek/tabular'
+Plugin 'ervandew/supertab'
+
+" >>> Autocompletion
+Bundle 'Valloric/YouCompleteMe'
+
+" >>> Powerline
+Plugin 'vim-airline/vim-airline'
+
+" >>> PEP8 Checking
+Plugin 'nvie/vim-flake8'
+
+" >>> Virtualenv Support
+Plugin 'jmcantrell/vim-virtualenv'
+
+" *** Monokai Theme
+Bundle 'lsdr/monokai'
+
+" *** Solarized
+Bundle 'altercation/solarized'
+
+call vundle#end()                        " Finish plugin initialization
+filetype plugin indent on                " load filetype plugins + indentations
+
+"-------------------------------------------------------------------------------
+" Basic options
+"-------------------------------------------------------------------------------
+syntax on
+set encoding=utf-8
+set showcmd                              " display incomplete commands
+set showmode
+set number
+set mouse=a
+set history=1000
+set completeopt=menuone,menu,longest
+set wildignore+=*\\tmp\\*,*.swp,*.swo,*.zip,.git,.cabal-sandbox
+set wildmode=longest,list,full
+set wildmenu
+set completeopt+=longest
+set t_Co=256
+set cmdheight=1
+set clipboard=unnamed
+" For racer
+set hidden
+" Disable arrow keys to enforce discipline
+noremap <Up> <nop>
+noremap <Down> <nop>
+noremap <Left> <nop>
+noremap <Right> <nop>
+
+"-------------------------------------------------------------------------------
+" Navigation
+"-------------------------------------------------------------------------------
+" Split navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Disable folding
+set nofoldenable
+
+"-------------------------------------------------------------------------------
+" Whitespace Handling
+"-------------------------------------------------------------------------------
+set tw=80
+set nowrap                               " don't wrap lines
+set softtabstop=2 shiftwidth=2               " a tab is two spaces (or 4...)
+set autoindent
+set expandtab                            " use spaces, not tabs
+set smarttab
+set smartindent
+set backspace=indent,eol,start           " backspace through everything
+" Set extraneous whitespace as bad
+highlight BadWhiteSpace ctermbg=red guibg=darkred
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.cpp,*.h,*.rs 
+            \ match BadWhitespace /\s\+$/
+
+"-------------------------------------------------------------------------------
+" Searching
+"-------------------------------------------------------------------------------
+set hlsearch                             " highlight matches
+set incsearch                            " incremental searching
+set ignorecase                           " case-insensitive search
+set smartcase                            " ...unless they contain at least 1 cap
+
+"-------------------------------------------------------------------------------
+" Change mapleader to something sensible, easier escapes
+"-------------------------------------------------------------------------------
+let mapleader=','
+:inoremap <C-space> <Esc>
+:inoremap jj <Esc>
+
+"-------------------------------------------------------------------------------
+" Theming and Fonts
+"-------------------------------------------------------------------------------
+if has("gui_running")
+  colorscheme monokai
+  set background=dark
+  if has("gui_gtk2")                    " Linux
+    set guifont=Inconsolata\ 12
+  elseif has("gui_macvim")
+    set guifont=Source\ Code\ Pro\ Light:h14
+  elseif has("gui_win32")
+    set guifont=Consolas:h11:cANSI
+  endif
+else
+  colorscheme koehler
+  set background=dark
+endif
+
+"-------------------------------------------------------------------------------
+" Vim-airline
+"-------------------------------------------------------------------------------
+set laststatus=2
+
+"-------------------------------------------------------------------------------
+" Syntastic-specific settings
+"-------------------------------------------------------------------------------
+map <Leader>s :SyntasticToggleMode<CR>
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+" eslint6
+let g:syntastic_javascript_checkers=['eslint']
+
+"-------------------------------------------------------------------------------
+" ghc-mod
+"-------------------------------------------------------------------------------
+map <silent> tw :GhcModTypeInsert<CR>
+map <silent> ts :GhcModSplitFunCase<CR>
+map <silent> tq :GhcModType<CR>
+map <silent> te :GhcModTypeClear<CR>
+
+"-------------------------------------------------------------------------------
+" supertab
+"-------------------------------------------------------------------------------
+let g:SuperTabDefaultCompletionType = '<c-x><c-o>'
+
+if has("gui_running")
+  imap <c-space> <c-r>=SuperTabAlternateCompletion("\<lt>c-x>\<lt>c-o>")<cr>
+else " no gui
+  if has("unix")
+    inoremap <Nul> <c-r>=SuperTabAlternateCompletion("\<lt>c-x>\<lt>c-o>")<cr>
+  endif
+endif
+
+let g:haskellmode_completion_ghc = 1
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
+"-------------------------------------------------------------------------------
+" Nerdtree
+"-------------------------------------------------------------------------------
+map <Leader>x :NERDTreeToggle<CR>
+let NERDTreeIgnore=['\.pyc$', '\~$']
+
+"-------------------------------------------------------------------------------
+" tabularize
+"-------------------------------------------------------------------------------
+let g:haskell_tabular = 1
+
+vmap a= :Tabularize /=<CR>
+vmap a; :Tabularize /::<CR>
+vmap a- :Tabularize /-><CR>
+
+"-------------------------------------------------------------------------------
+" ctrl-p
+"-------------------------------------------------------------------------------
+map <silent> <Leader>t :CtrlP()<CR>
+noremap <leader>b<space> :CtrlPBuffer<cr>
+let g:ctrlp_custom_ignore = '\v[\/]dist$'
+
+
+"-------------------------------------------------------------------------------
+" SoftPencil
+"-------------------------------------------------------------------------------
+map <Leader>p :SoftPencil<CR>
+
+"-------------------------------------------------------------------------------
+" Rust + Racer
+"-------------------------------------------------------------------------------
+let g:rustfmt_autosave = 1
+let g:racer_cmd = "~/src/racer/target/release/racer"
+let $RUST_SRC_PATH="~/src/rust/src"
+
+"-------------------------------------------------------------------------------
+" SimpylFold
+"-------------------------------------------------------------------------------
+let g:SimpylFold_docstring_preview=1
+
+"-------------------------------------------------------------------------------
+" YouCompleteMe
+"-------------------------------------------------------------------------------
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+"-------------------------------------------------------------------------------
+" Text-specific settings (.txt, .tex, .md)
+"-------------------------------------------------------------------------------
+au BufRead,BufNewFile *.txt,*.tex,*.md set wrap linebreak nolist textwidth=0 wrapmargin=0
+
+"-------------------------------------------------------------------------------
+" Python Settings (Pep8)
+"-------------------------------------------------------------------------------
+au BufNewFile,BufRead *.py 
+            \ set tabstop=4 |
+            \ set softtabstop=4 |
+            \ set shiftwidth=4 | 
+            \ set textwidth=79 | 
+            \ set expandtab | 
+            \ set autoindent | 
+            \ set fileformat=unix |
+
+let python_highlight_all=1
+
+"-------------------------------------------------------------------------------
+" Web Files
+"-------------------------------------------------------------------------------
+au BufNewFile,BufRead *.js,*.html,*.css,*.rb 
+            \ set tabstop=2 |
+            \ set softtabstop=2 |
+            \ set shiftwidth=2 |
+

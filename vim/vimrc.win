@@ -1,0 +1,280 @@
+" Author: Jan Van Uytven
+" Largely copied form Steve Losh (stevelosh.com)
+" Some modifications from Mark Nibhols (zanshin.net)
+" Additional bits from git, vimcast, vimtips, etc...
+" as well as https://github.com/lukaszkorecki/DOtFiles
+"
+" -----------------------------------------------------------------------------
+" use Vim settings rather than vi settings (must be first)
+" -----------------------------------------------------------------------------
+set nocompatible
+syntax on
+" -----------------------------------------------------------------------------
+" Setup Pathogen to manage plugins
+" -----------------------------------------------------------------------------
+filetype off		" force reloading after pathogen loaded
+call pathogen#helptags()
+call pathogen#runtime_append_all_bundles()
+filetype plugin indent on " enable plugins, detection and indenting in one step
+call pathogen#infect()
+" -----------------------------------------------------------------------------
+" Change mapleader from \ to ,
+" -----------------------------------------------------------------------------
+let mapleader=','
+
+" -----------------------------------------------------------------------------
+" Basic options, including tabbing
+" -----------------------------------------------------------------------------
+set modelines=0 " Disable to prevent security exploits using modelines
+set tabstop=4		" 4-space tab stop
+set shiftwidth=4	" Number of spaces to use for autoindentation
+set softtabstop=4	" When <BS>, pretend a tab is removed, even if spaces
+set expandtab		" Expand tabs to spaces (indispensible for python)
+set scrolloff=3		" Keep 3 lines off the edges of the screen when scroll
+set autoindent		" Always set autoindenting on
+set showmode		" Always show what mode we're in
+set showcmd
+set hidden
+set wildmenu
+set wildmode=list:longest
+set visualbell
+set cursorline
+set ttyfast
+set ruler		    " Show row, col in status area
+set backspace=indent,eol,start	" Allow backspacing over everything in insert
+set history=1000
+set undodir=%HOMEPATH%/tmp/undodir	" Set undo file location
+set undofile
+set backupdir=%HOMEPATH%/tmp	" Set backup directory location
+set directory=%HOMEPATH%/tmp
+set ffs=unix,mac,dos	" default file types
+set spell		" turn spell check on
+
+" Use relative (offset) line number
+" set relativenumber
+:set number
+" but only in active window split
+" :au WinEnter * :setlocal relativenumber
+" :au WinLeave * :setlocal nonumber
+
+" Automatically resize vertical splits to maximize current split
+" Note: messes with NERDTree sidebar, so disabled
+" :au WinEnter * :set winfixheight
+" :au WinEnter * :wincmd =
+
+" Always chdir to the last opened file
+set autochdir
+autocmd BufEnter * silent! lcd %:p:h
+
+" -----------------------------------------------------------------------------
+" Editor layout
+" -----------------------------------------------------------------------------
+set termencoding=utf-8
+set encoding=utf-8
+set lazyredraw          " Don't update the display while executing macros
+set laststatus=2        " Tell vim to always put a status line in, even if
+                        " there's only one window
+set cmdheight=2         " Use a status bar that is two rows high
+
+" Set options based on whether we're in the GUI or terminal
+" Mostly we're hiding the toolbar in MacVim
+if has("gui_running")
+    set guioptions=egmrt
+    set guioptions-=T
+    set t_Co=256
+    set background=dark
+    colorscheme koehler 
+    set showtabline=2   " Always show tabbar in gui
+    set lines=40
+    set columns=126
+else
+    colorscheme koehler
+    set background=dark
+    set lines=40
+    set columns=86
+endif
+
+" Fonts
+set gfn=Consolas:h13
+" set shell=/bin/zsh
+
+" -----------------------------------------------------------------------------
+" Moving and searching
+" -----------------------------------------------------------------------------
+
+" Fix horribly broken regexes.  Seriously, Perl regexes are the standard.
+" Why use anything else?
+nnoremap / /\v
+vnoremap / /\v
+set ignorecase      " Ignore case when searching
+set smartcase       " ignore case if search string is all lowercase,
+                    " case-sensitive otherwise
+set gdefault        " sub is global by default
+set incsearch       " highlight search results as you type
+set showmatch
+set hlsearch
+" ,+<space> get rid of search highlighting
+nnoremap <leader><space> :noh<cr>
+" tab key matches bracket pairs
+nnoremap <tab> %
+vnoremap <tab> %
+
+" -----------------------------------------------------------------------------
+" Handle long lines
+" -----------------------------------------------------------------------------
+set wrap
+set textwidth=79        
+set formatoptions=qrn1
+set colorcolumn=85      " Warning when long line reached
+
+" Show invisible characters
+set list
+set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
+
+" -----------------------------------------------------------------------------
+" Indentation key mappings (TextMate style)
+" -----------------------------------------------------------------------------
+nmap <D-[> <<
+nmap <D-]> >>
+nmap <D-[> <gv
+nmap <d-]> >gv
+
+" -----------------------------------------------------------------------------
+" Remap the "stupid goddamn help key" to ESC
+" -----------------------------------------------------------------------------
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+" Also, remap ';' to ':' to prevent having to shift-; to get into normal
+nnoremap ; :
+
+" -----------------------------------------------------------------------------
+" Save on losing focus
+" -----------------------------------------------------------------------------
+au FocusLost * :wa
+
+" -----------------------------------------------------------------------------
+" map shift-space to ESC for quicker escaping, and vimrc editing
+" -----------------------------------------------------------------------------
+imap <S-Space> <Esc>
+nmap <S-Shape> i
+imap jj <Esc>
+nnoremap <leader>ev :tabnew $MYVIMRC<cr>
+
+" -----------------------------------------------------------------------------
+" Useful functions and the like
+" -----------------------------------------------------------------------------
+
+" Strip all trailing whitespace from the current file
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+" ,ft folds tags
+nnoremap <leader>ft Vatzf
+" Sort CSS properties :)
+nnoremap <leader>S ?{<CR>jV/^\s*}?$<CR>k:sort<CR>:noh<CR>
+" ,q to re-hardwrap paragraphs of text (for Txt)
+nnoremap <leader>q gqip
+" ,v reselect text just pastes (for indentation, etc...)
+nnoremap <leader>v V`]
+
+ 
+" -----------------------------------------------------------------------------
+" Stuff for working with split windows, buffers, etc.. 
+" -----------------------------------------------------------------------------
+
+" ,w opens a new vertical split and switches over to it
+" nnoremap <leader>w <C-w>v<C-w>l
+" Ctrl-h,j,k,l - split window movement keys - remember Cap Lock toggles Ctrl!
+" nnoremap <C-h> <C-w>h
+" nnoremap <C-j> <C-w>j
+" nnoremap <C-k> <C-w>k
+" nnoremap <C-l> <C-w>l
+nmap <leader>w <C-w>w
+" Quick buffer swapping
+map <leader>, :tabn<CR>
+map <leader>. :tabp<CR>
+" map <leader>w :<C-W>w
+
+" Map arrow keys to move between buffers, and to do pageup/pagedown
+nmap <Left> :bp<CR>
+nmap <Right> :bn<CR>
+nmap <Up> <PageUp>
+nmap <Down> <PageDown>
+
+" Map Shift-J and Shift-K to PageUp and PageDown instead of 'Join lines' and
+" 'Help'
+nmap <S-j> <PageDown>
+nmap <S-k> <PageUp>
+
+ 
+" -----------------------------------------------------------------------------
+" Control whitespace preferences based on filetype, uses autocmd
+" -----------------------------------------------------------------------------
+if has("autocmd")
+    " Enable file type detection
+    filetype on
+
+    " Syntax of these languages is fussy over tabs vs spaces
+    autocmd FileType make setlocal ts=8 sts=8 sw=8 noexpandtab
+    autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+    " Treat .rss files as XML
+    autocmd BufNewFile,BufRead *.rss,*.atom setfiletype xml
+
+    " markdown filetype
+    autocmd BufNewFile,BufRead *.md, *.mkd, *.markdown setfiletype markdown
+    autocmd BufNewFile,BufRead *.md, *.mkd, *.markdown set spell
+
+    " non ruby files related to Ruby
+    autocmd BufNewFile,BufRead Gemfile,Gemfile,lock,Guardfile setfiletype ruby
+    autocmd BufNewFile,BufRead Rakefile setfiletype rake
+    autocmd BufNewFile,BufRead Rakefile set syntax=ruby
+    autocmd BufNewFile,BufRead *.rake setfiletype rake
+    autocmd BufNewFile,BufRead *.rake set syntax=ruby
+
+    " Python specific settings
+    let NERDTreeIgnore = ['\.pyc$', '\~$', '\.rbc$']
+    autocmd BufNewFile,BufRead *.py set ts=2 sts=2 sw=2 expandtab
+
+    " Txt specific settings
+    autocmd BufNewFile,BufRead *.txt set wrap syntax=text linebreak nolist
+endif
+
+" -----------------------------------------------------------------------------
+"  Omnicomplete Stuff
+" -----------------------------------------------------------------------------
+set ofu=syntaxcomplete#Complete
+
+" -----------------------------------------------------------------------------
+" Bundle stuff
+" -----------------------------------------------------------------------------
+
+" NERDTree
+" ,-x to load Nerdtree
+let g:NERDTreeWinSize = 36
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1
+nmap <leader>x :NERDTree<CR>
+" Start NERDTree on start
+au VimEnter * NERDTree
+
+"NERDCommenter
+"<leader>c<space> "toggles comment
+
+nnoremap <leader>a :Ack
+
+" Gundo
+nnoremap <F5> :GundoToggle<CR>
+
+" MiniBufExplorer
+nmap <leader>f :MiniBufExplorer<CR>
+
+" Ctags
+nmap <leader>c :TlistOpen<CR> 
+
+
+" -----------------------------------------------------------------------------
+" THE END OF THE SONG
+" -----------------------------------------------------------------------------
+
+
+

@@ -1,0 +1,52 @@
+[user]
+	name = Ysgard
+	email = ysgard@gmail.com
+	signingkey = F8B78E68
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore
+	pager = 
+[color]
+	ui = true
+[diff]
+  	tool = meld
+[difftool]
+ 	prompt = false
+[difftool "meld"]
+	cmd = meld "$LOCAL" "$REMOTE"
+[merge]
+  tool = meld
+[mergetool]
+  keepBackup = false
+[mergetool "meld"]
+	cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+[alias]
+  conflicts = diff --name-only --diff-filter=U 
+	lg = log --color --graph --pretty=format:'%C(red)%h -%C(yellow)%d  %C(white)%s %C(green)(%cr) %C(bold blue)<%an>%Creset'
+	co = checkout
+	ds = diff --staged
+	st = status -sb
+	amend = commit --amend
+	undo = reset --soft HEAD^
+	standup = log --since '1 day ago' --oneline --author=ysgard
+    ci = commit -S
+    di = diff
+    dc = diff --cached
+    ff = merge --ff-only
+    noff = merge --no-ff
+    fa = fetch --all
+    pom = push origin master
+    pod = push origin develop
+    b = branch
+    dh1 = diff HEAD~1
+[push]
+	default = matching
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

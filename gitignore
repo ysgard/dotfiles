@@ -1,0 +1,54 @@
+# Object Files #
+################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.rbc
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and Databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+# Editors #
+###########
+*~
+*.swp
+*.swo
+/bundle/
+
+# OS #
+######
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# History Files #
+#################
+.*history
+
+# Rust #
+########
+**/*.rs.bk
+/target/
+
+### Haskell
+.cabal-sandbox/
+cabal.sandbox.config
+dist/
