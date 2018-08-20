@@ -12,8 +12,9 @@ class Dotfiles < Thor
                 fish
                 inputrc-osx
                 vim
+                nvim
                 ]
-  
+
   desc "install", "Install all dotfiles into #{@user}'s home directory"
   method_options :force => :boolean
   def install
@@ -32,9 +33,23 @@ class Dotfiles < Thor
   desc "install_vim", "Install vim config files into #{@user}'s home directory"
   method_options :force => :boolean
   def install_vim
-    empty_directory "#{Dir.pwd}/vim/bundle"
-    run "#{Dir.pwd}/vim/update.sh"
-    link_file("#{Dir.pwd}/vim", "~#{@user}/.vim", options[:force])
+    empty_directory "~#{@user}/.vim/bundle"
+    empty_directory "~#{@user}/.vim/autoload"
+    empty_directory "~#{@user}/.vim/colors"
+    link_file("#{Dir.pwd}/vim/vimrc", "~#{@user}/.vim/vimrc", options[:force])
+    copy_file("#{Dir.pwd}/vim/update.sh", "~#{@user}/.vim/update.sh", options[:force]) 
+    chmod "~#{@user}/.vim/update.sh", 0755
+    run "curl -LSso ~#{@user}/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim"
+    run "curl -LSso ~#{@user}/.vim/colors/molokai.vim https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim"
+    inside("~#{@user}/.vim") do
+      run "~#{@user}/.vim/update.sh"
+    end
+  end
+
+  desc "install_nvim", "Install nvim config files into #{@user}'s home directory"
+  method_options :force => :boolean
+  def install_nvim
+    link_file("#{Dir.pwd}/nvim/init.vim", "~#{@user}/.config/nvim/init.vim", options[:force])
   end
 
   desc "clean_all", "Remove all dotfile links from the #{@user}'s home directory"
@@ -47,7 +62,6 @@ class Dotfiles < Thor
     remove_file "~#{@user}/.config/fish/config.fish"
     remove_file "~#{@user}/.config/fish/functions"
     remove_file "~#{@user}/.vim"
-    remove_file "~#{Dir.pwd}/vim/bundle"
   end
 end
 

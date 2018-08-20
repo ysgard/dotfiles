@@ -26,7 +26,7 @@ repos=(
 )
 
 set -e
-dir=~/.dotfiles/vim/bundle
+dir=~/.vim/bundle
 
 if [ -d $dir -a -z "$1" ]; then
   temp="$(mktemp -d -t bundleXXXXX)"

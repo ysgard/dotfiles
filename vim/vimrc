@@ -229,8 +229,6 @@ set wildmode=list:longest,full  " List all options and complete
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules
                               " Ignore certain files in tab-completion
 
-" Essential for filetype plugins.
-filetype plugin indent on
 
 
 " ------------------------------------------------------------------------------
@@ -239,8 +237,11 @@ filetype plugin indent on
 
 " Use Pathogen for plugin management.  Repos are handled by update.sh
 runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
-call pathogen#helptags()
+execute pathogen#infect()
+execute pathogen#helptags()
+
+" Essential for filetype plugins.
+filetype plugin indent on
 
 " For any plugins that use this, make their keymappings use comma
 let mapleader = ","
