@@ -119,5 +119,11 @@ class Dotfiles < Thor
     run "~#{@user}/.rbenv/bin/rbenv rehash"
     run "~#{@user}/.rbenv/bin/rbenv install #{options[:version]}"
   end
+
+  desc 'install_rust', 'Installs rust & cargo via rustup'
+  def install_rust
+    run 'curl https://sh.rustup.rs -sSf | sh'
+    run 'rustup component add rust-src'
+  end
 end
 
