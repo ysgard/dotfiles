@@ -26,7 +26,7 @@ class Dotfiles < Thor
     link_file("#{Dir.pwd}/fish/functions", "~#{@user}/.config/fish/functions", options[:force])
     if RUBY_PLATFORM.include?('darwin')
       link_file("#{Dir.pwd}/inputrc-osx", "~#{@user}/.inputrc", options[:force])
-      end
+    end
     empty_directory "~#{@user}/tmp"
   end
 
@@ -62,6 +62,16 @@ class Dotfiles < Thor
     remove_file "~#{@user}/.config/fish/config.fish"
     remove_file "~#{@user}/.config/fish/functions"
     remove_file "~#{@user}/.vim"
+  end
+
+  desc "install_powerline_fonts", "Install fonts patched for Powerline"
+  method_options :force => :boolean
+  def install_powerline_fonts
+    empty_directory "~#{@user}/src"
+    run "git clone https://github.com/powerline/fonts.git --depth=1 ~#{@user}/src/powerline_fonts"
+    inside("~#{@user}/src/powerline_fonts") do
+      run './install.sh'
+    end
   end
 end
 
