@@ -73,5 +73,28 @@ class Dotfiles < Thor
       run './install.sh'
     end
   end
+
+  desc "install_fish", "Install fish, oh-my-fish, and bobthefish"
+  method_options :force => :boolean
+  def install_fish
+    # Install fish
+    if RUBY_PLATFORM.include?('darwin')
+      run 'brew install fish'
+    elsif RUBY_PLATFORM.include?('linux-gnu')
+      if run('which apt').include?('apt not found')
+        run 'yum install -y fish'
+      else
+        run 'apt install -y fish'
+      end
+    else
+      raise "Cannot figure out how to install fish, unsupported OS: #{RUBY_PLATFORM}"
+    end
+    # Install oh-my-fish
+    run 'curl -L https://get.oh-my-fish | fish'
+    # Install the powerline fonts
+    thor :install_powerline_fonts
+    # Install bobthefish
+    run 'omf install bobthefish'
+  end
 end
 
