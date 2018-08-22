@@ -9,7 +9,7 @@ set -x LC_CTYPE en_US.UTF-8
 set -x NODE_PATH ~/.node_modules
 
 # Ruby
-# set -x PATH $HOME/.rbenv/bin $HOME/.rbenv/shims $PATH
+set -x PATH $HOME/.rbenv/bin $HOME/.rbenv/shims $PATH
 
 # Rust
 set -x PATH ~/.cargo/bin $PATH

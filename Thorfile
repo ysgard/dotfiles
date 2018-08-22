@@ -2,7 +2,7 @@ class Dotfiles < Thor
   include Thor::Actions
   Thor::Sandbox::Dotfiles.source_root(File.expand_path('..', __FILE__))
   @user = %x[whoami].chomp
-
+  @ruby_version = "2.5.1"
   @@dont_install = %w[
                 Gemfile
                 Gemfile.lock
@@ -14,6 +14,8 @@ class Dotfiles < Thor
                 vim
                 nvim
                 ]
+
+
 
   desc "install", "Install all dotfiles into #{@user}'s home directory"
   method_options :force => :boolean
@@ -95,6 +97,27 @@ class Dotfiles < Thor
     thor :install_powerline_fonts
     # Install bobthefish
     run 'omf install bobthefish'
+  end
+
+  desc "prep_ubuntu", "Installs prerequisites for ubuntu"
+  def prep_ubuntu
+    run 'sudo apt install -y wget curl ruby'
+    run 'sudo gem install bundler thor'
+    run 'sudo apt install -y libssl-dev libreadline-dev'
+  end
+
+  desc "install_rbenv", "Installs rbenv and ruby_build"
+  method_option :version, 
+    :default => @ruby_version, 
+    :alias => "-v",
+    :desc => "The version to pass to ruby-build"
+  def install_rbenv
+    run "git clone https://github.com/rbenv/rbenv.git ~#{@user}/.rbenv"
+    run "~#{@user}/.rbenv/bin/rbenv init"
+    empty_directory "~#{@user}/.rbenv/plugins"
+    run "git clone https://github.com/rbenv/ruby-build.git ~#{@user}/.rbenv/plugins/ruby-build"
+    run "~#{@user}/.rbenv/bin/rbenv rehash"
+    run "~#{@user}/.rbenv/bin/rbenv install #{options[:version]}"
   end
 end
 
