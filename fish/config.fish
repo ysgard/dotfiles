@@ -2,6 +2,8 @@ set -g fish_greeting ''
 
 # Terminal options
 set -x TERM xterm-256color
+set -x LANG en_US.UTF-8
+set -x LC_CTYPE en_US.UTF-8
 
 # Node
 set -x NODE_PATH ~/.node_modules
