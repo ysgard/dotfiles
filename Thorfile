@@ -51,7 +51,13 @@ class Dotfiles < Thor
   desc "install_nvim", "Install nvim config files into #{@user}'s home directory"
   method_options :force => :boolean
   def install_nvim
+    run 'curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh'
+    run 'sh ./installer.sh ~/.cache/dein'
+    run 'sudo pip3 install neovim --upgrade'
     link_file("#{Dir.pwd}/nvim/init.vim", "~#{@user}/.config/nvim/init.vim", options[:force])
+    Dir['nvim/config/*'].each do |config_file|
+      link_file(config_file, "~#{@user}/.config/#{config_file}", options[:force])
+    end
   end
 
   desc "clean_all", "Remove all dotfile links from the #{@user}'s home directory"
@@ -64,6 +70,7 @@ class Dotfiles < Thor
     remove_file "~#{@user}/.config/fish/config.fish"
     remove_file "~#{@user}/.config/fish/functions"
     remove_file "~#{@user}/.vim"
+    remove_file "~#{@user}/.config/nvim"
   end
 
   desc "install_powerline_fonts", "Install fonts patched for Powerline"
@@ -101,7 +108,7 @@ class Dotfiles < Thor
 
   desc "prep_ubuntu", "Installs prerequisites for ubuntu"
   def prep_ubuntu
-    run 'sudo apt install -y wget curl ruby'
+    run 'sudo apt install -y wget vim neovim emacs curl ruby python3 python3-pip'
     run 'sudo gem install bundler thor'
     run 'sudo apt install -y libssl-dev libreadline-dev'
   end
