@@ -130,7 +130,10 @@ class Dotfiles < Thor
   desc 'install_rust', 'Installs rust & cargo via rustup'
   def install_rust
     run 'curl https://sh.rustup.rs -sSf | sh'
+    run 'rustup toolchain install nightly'
+    run 'rustup default nightly'
     run 'rustup component add rust-src'
+    run 'cargo install racer'
   end
 end
 
