@@ -9,7 +9,7 @@
 " Display options
 set termguicolors
 set background=dark
-colorscheme molokai
+colorscheme NeoSolarized
 
 " General options
 set autoindent                " Carry over indenting from previous line

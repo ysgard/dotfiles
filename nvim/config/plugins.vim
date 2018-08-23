@@ -10,7 +10,7 @@ if dein#load_state('~/.cache/dein')
   call dein#begin('~/.cache/dein')
 
   call dein#add('~/.cache/dein')
-  
+
   " Plugins
   call dein#add('vim-airline/vim-airline')
   call dein#add('vim-airline/vim-airline-themes')
@@ -18,6 +18,7 @@ if dein#load_state('~/.cache/dein')
   call dein#add('w0rp/ale')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('tomasr/molokai')
+  call dein#add('iCyMind/NeoSolarized')
 
   call dein#add('autozimu/LanguageClient-neovim', {
                       \ 'rev': 'next',
