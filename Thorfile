@@ -50,10 +50,13 @@ class Dotfiles < Thor
 
   desc "install_nvim", "Install nvim config files into #{@user}'s home directory"
   method_options :force => :boolean
+  method_option :filesonly, :aliases => '-f', :desc => "Only config files, no pip3 or dein"
   def install_nvim
-    run 'curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh'
-    run 'sh ./installer.sh ~/.cache/dein'
-    run 'sudo pip3 install neovim --upgrade'
+    if !options[:filesonly]
+      run 'curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh'
+      run 'sh ./installer.sh ~/.cache/dein'
+      run 'sudo pip3 install neovim --upgrade'
+    end
     link_file("#{Dir.pwd}/nvim/init.vim", "~#{@user}/.config/nvim/init.vim", options[:force])
     Dir['nvim/config/*'].each do |config_file|
       link_file(config_file, "~#{@user}/.config/#{config_file}", options[:force])

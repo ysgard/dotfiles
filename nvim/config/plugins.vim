@@ -17,6 +17,7 @@ if dein#load_state('~/.cache/dein')
   call dein#add('scrooloose/nerdtree')
   call dein#add('w0rp/ale')
   call dein#add('Shougo/deoplete.nvim')
+  call dein#add('icymind/NeoSolarized')
 
   call dein#add('autozimu/LanguageClient-neovim', {
                       \ 'rev': 'next',

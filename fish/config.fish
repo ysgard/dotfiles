@@ -33,3 +33,11 @@ set -x LIBRARY_PATH /usr/local/lib $LIBRARY_PATH
 
 # $HOME/bin 
 set -x PATH $HOME/bin /usr/local/bin /usr/local/sbin $PATH
+
+# rbenv
+status --is-interactive; and source (rbenv init -|psub)
+
+# Source local fish file, if it exists
+if test -e ~/.config/fish/config-local.fish
+  . ~/.config/fish/config-local.fish
+end
