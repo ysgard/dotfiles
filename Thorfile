@@ -74,6 +74,7 @@ class Dotfiles < Thor
     remove_file "~#{@user}/.config/fish/functions"
     remove_file "~#{@user}/.vim"
     remove_file "~#{@user}/.config/nvim"
+    remove_file "~#{@user}/.cache/dein"
   end
 
   desc "install_powerline_fonts", "Install fonts patched for Powerline"
