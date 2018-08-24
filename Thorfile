@@ -53,9 +53,8 @@ class Dotfiles < Thor
   method_option :filesonly, :aliases => '-f', :desc => "Only config files, no pip3 or dein"
   def install_nvim
     if !options[:filesonly]
-      run 'curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh'
-      run 'sh ./installer.sh ~/.cache/dein'
-      run 'sudo pip3 install neovim --upgrade'
+      url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+      run "curl -fLo ~#{@user}/.local/share/nvim/site/autoload/plug.vim --create-dirs #{url}"
     end
     link_file("#{Dir.pwd}/nvim/init.vim", "~#{@user}/.config/nvim/init.vim", options[:force])
     Dir['nvim/config/*'].each do |config_file|
@@ -75,6 +74,7 @@ class Dotfiles < Thor
     remove_file "~#{@user}/.vim"
     remove_file "~#{@user}/.config/nvim"
     remove_file "~#{@user}/.cache/dein"
+    remove_file "~#{@user}/.cache/plugged"
   end
 
   desc "install_powerline_fonts", "Install fonts patched for Powerline"

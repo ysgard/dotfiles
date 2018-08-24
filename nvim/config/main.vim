@@ -83,4 +83,6 @@ let g:ale_sign_error = '✗'
 highlight link ALEWarningSign String
 highlight link ALEErrorSign Title
 
-
+" Molokai
+let g:molokai_original = 1
+let g:rehash256 = 1

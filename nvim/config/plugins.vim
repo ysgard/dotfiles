@@ -1,38 +1,22 @@
 " plugins.vim
-" Use dein to manage plugins
+" Use vim-plug to manage plugins
 if &compatible
   set nocompatible
 endif
 
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+call plug#begin('~/.local/share/nvim/plugged')
 
-if dein#load_state('~/.cache/dein')
-  call dein#begin('~/.cache/dein')
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'w0rp/ale'
+Plug 'iCyMind/NeoSolarized'
 
-  call dein#add('~/.cache/dein')
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-  " Plugins
-  call dein#add('vim-airline/vim-airline')
-  call dein#add('vim-airline/vim-airline-themes')
-  call dein#add('scrooloose/nerdtree')
-  call dein#add('w0rp/ale')
-  call dein#add('Shougo/deoplete.nvim')
-  call dein#add('tomasr/molokai')
-  call dein#add('iCyMind/NeoSolarized')
+" Load on-demand
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 
-  call dein#add('autozimu/LanguageClient-neovim', {
-                      \ 'rev': 'next',
-                      \ 'build': 'bash install.sh',
-                      \ })
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 
-  call dein#end()
-  call dein#save_state()
-endif
+call plug#end()
 
-filetype plugin indent on
-syntax enable
-
-" On startup install any plugins not installed
-if dein#check_install()
-  call dein#install()
-endif
