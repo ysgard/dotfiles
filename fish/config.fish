@@ -28,9 +28,6 @@ set -x LC_COLLATE C
 # Go
 set -x GOPATH ~/Go
 
-# OS X Homebrew
-set -x LIBRARY_PATH /usr/local/lib $LIBRARY_PATH 
-
 # $HOME/bin 
 set -x PATH $HOME/bin /usr/local/bin /usr/local/sbin $PATH
 
