@@ -1,6 +1,6 @@
-class Dotfiles < Thor
+class Dot < Thor
   include Thor::Actions
-  Thor::Sandbox::Dotfiles.source_root(File.expand_path('..', __FILE__))
+  Thor::Sandbox::Dot.source_root(File.expand_path('..', __FILE__))
   @user = %x[whoami].chomp
   @ruby_version = "2.5.1"
   @@dont_install = %w[
@@ -13,6 +13,7 @@ class Dotfiles < Thor
                 inputrc-osx
                 vim
                 nvim
+                emacs.d
                 ]
 
 
@@ -139,6 +140,37 @@ class Dotfiles < Thor
     run 'rustup default nightly'
     run 'rustup component add rust-src'
     run 'cargo install racer'
+  end
+
+  desc 'install_emacs', 'Installs emacs config into ~/.emacs.d'
+  method_option :force,
+    :type => :boolean,
+    :default => true,
+    :desc => "Overwrite existing links"
+  method_option :link_only,
+    :type => :boolean,
+    :default => false,
+    :desc => "Only link config files, don't install repos"
+  def install_emacs
+    if !options[:link_only]
+      remove_file "~#{@user}/.emacs.d"
+    end
+    empty_directory "~#{@user}/.emacs.d"
+    link_file("#{Dir.pwd}/emacs.d/init.el", "~#{@user}/.emacs.d/init.el",
+              options[:force])
+    Dir['emacs.d/ysgard/*'].each do |file|
+      f = file.split('/')[1..-1].join('/')
+      link_file("#{file}",
+                "~#{@user}/.emacs.d/#{f}",
+                options[:force])
+    end
+    # Install custom packages
+    if !options[:link_only]
+      run "git clone https://github.com/emacs-lsp/lsp-mode" \
+        " ~#{@user}/.emacs.d/lsp-mode"
+      run "git clone https://github.com/emacs-lsp/lsp-ui" \
+        " ~#{@user}/.emacs.d/lsp-ui"
+    end
   end
 end
 
