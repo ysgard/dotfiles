@@ -103,6 +103,7 @@ class Dotfiles < Thor
       raise "Cannot figure out how to install fish, unsupported OS: #{RUBY_PLATFORM}"
     end
     # Install oh-my-fish
+    remove_file "~#{@user}/.local/share/omf"
     run 'curl -L https://get.oh-my.fish | fish'
     # Install the powerline fonts
     self.install_powerline_fonts
