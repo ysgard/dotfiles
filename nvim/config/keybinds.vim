@@ -24,5 +24,9 @@ vnoremap <space> zf
 " Quick-fix spelling
 nmap <Leader>z z=1<CR><CR>
 
+" Call fzf
+nmap <Leader>f :FZF<CR>
 
+" Toggle line numbers
+nmap <Leader>l :set invnumber<CR>
 

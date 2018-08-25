@@ -5,3 +5,5 @@ plugins=(aws brew bundler cargo docker docker-compose emacs gem git git-extras g
 
 source $ZSH/oh-my-zsh.sh
 eval "$(rbenv init -)"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
