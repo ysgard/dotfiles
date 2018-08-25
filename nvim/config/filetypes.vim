@@ -33,6 +33,7 @@ au BufNewFile,BufRead .gitconfig* setlocal ft=gitconfig nolist ts=4 sw=4 noet
 au BufNewFile,BufRead .vimlocal,.gvimlocal setf vim
 au BufNewFile,BufRead .zshlocal setf zsh
 au BufNewFile,BufRead /tmp/crontab* setf crontab
+au BufNewFile,BufRead Thorfile,*.thor setf ruby
 
 au FileType gitcommit setlocal nolist ts=4 sts=4 sw=4 noet 
 au FileType json setlocal conceallevel=0 foldmethod=syntax foldlevel=999
