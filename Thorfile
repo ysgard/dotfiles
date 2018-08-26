@@ -170,6 +170,8 @@ class Dot < Thor
         " ~#{@user}/.emacs.d/lsp-mode"
       run "git clone https://github.com/emacs-lsp/lsp-ui" \
         " ~#{@user}/.emacs.d/lsp-ui"
+      run "git clone https://github.com/emacs-lsp/lsp-rust" \
+        " ~#{@user}/.emacs.d/lsp-rust"
     end
   end
 end

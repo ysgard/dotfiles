@@ -22,6 +22,7 @@
                           color-theme-sanityinc-tomorrow ; Tomorrow themes
                           company                        ; text completion framework
                           company-ghci
+                          company-lsp                    ; Language server integration with company
                           cql-mode                       ; Cassandra
                           cyberpunk-theme
                           dash                           ; modern list library
