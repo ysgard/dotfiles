@@ -1,1 +1,0 @@
-/home/ysgard/.fzf/shell/key-bindings.fish
