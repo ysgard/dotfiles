@@ -8,7 +8,7 @@
 
 " Display options
 set termguicolors
-set background=dark
+set background=light
 colorscheme NeoSolarized
 
 " General options
