@@ -12,6 +12,7 @@ Plug 'w0rp/ale'
 Plug 'iCyMind/NeoSolarized'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'mhartington/oceanic-next'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 

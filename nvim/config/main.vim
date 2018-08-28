@@ -8,8 +8,9 @@
 
 " Display options
 set termguicolors
-set background=light
-colorscheme NeoSolarized
+syntax enable
+" set background=light
+colorscheme OceanicNext
 
 " General options
 set autoindent                " Carry over indenting from previous line
