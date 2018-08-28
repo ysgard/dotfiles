@@ -72,4 +72,6 @@ Your installed Emacs reports:
 (require 'core-package)
 
 ;; Load the enabled modules
-(when (not (boundp 'ysgard/wizard
+
+;; Load the user's config, if it exists
+(load (concat dotfiles-dir "user.el") 'noerror)

@@ -14,6 +14,7 @@ class Dot < Thor
                 vim
                 nvim
                 emacs.d
+                emacs.new
                 ]
 
 
@@ -172,6 +173,50 @@ class Dot < Thor
         " ~#{@user}/.emacs.d/lsp-ui"
       run "git clone https://github.com/emacs-lsp/lsp-rust" \
         " ~#{@user}/.emacs.d/lsp-rust"
+    end
+  end
+
+  # Install development emacs environment
+  desc 'install_emacs_dev', 'Installs emacs.dev into ~/.emacs.dev'
+  method_option :force,
+                :type => :boolean,
+                :default => true,
+                :desc => 'Overwrite existing links'
+  method_option :link_only,
+                :type => :boolean,
+                :default => false,
+                :desc => 'Only link config files, don\'t install repos'
+  def install_emacs_dev
+    if !options[:link_only]
+      remove_file "~#{@user}/.emacs.dev"
+    end
+    empty_directory "~#{@user}/.emacs.dev"
+    Dir['emacs.dev/*.el'].each do |file|
+      link_file("#{file}", "~#{@user}/.#{file}", options[:force])
+    end
+    Dir['emacs.dev/corelib/*.el'].each do |file|
+      f = file.split('/')[1..-1].join('/')
+      link_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
+    end
+    Dir['emacs.dev/modules/*.el'].each do |file|
+      f = file.split('/')[1..-1].join('/')
+      link_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
+    end
+    # Install custom packages
+    if !options[:link_only]
+    end
+  end
+
+  desc 'toggle_emacs_dev', 'backup .emacs.d and install a link to .emacs.dev'
+  def toggle_emacs_dev
+    # If .emacs.bak exists, a dev env is in place, replace it
+    if Dir.exist?(File.expand_path("~#{@user}/.emacs.bak"))
+      remove_file "~#{@user}/.emacs.d"
+      run "mv ~#{@user}/.emacs.bak ~#{@user}/.emacs.d"
+    else
+      run "mv ~#{@user}/.emacs.d ~#{@user}/.emacs.bak"
+      self.install_emacs_dev
+      link_file("~#{@user}/.emacs.dev", "~#{@user}/.emacs.d")
     end
   end
 end
