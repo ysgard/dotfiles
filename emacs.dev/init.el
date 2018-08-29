@@ -71,6 +71,8 @@ Your installed Emacs reports:
 (require 'core-lib)
 (require 'core-package)
 
+(require 'core-set-path)
+
 ;; Load the enabled modules
 
 ;; Load the user's config, if it exists
