@@ -1,79 +1,60 @@
-;;; -*- lexical-bunding: t -*-
-;;; init.el --- A beginning is a very delicate time...
+;;;; ~/.emacs.d/init.el --- Summary
 
-;; Copyright (C) 2018 Jan Van Uytven
+;;; All emacs initialization is controlled through here.
+;;; Functionality is broken out into subfiles
 
-;; Author: Jan Van Uytven <ysgard@gmail.com>
-
-;; This code is somewhat based on Bodil Stokke's 'ohai-emacs'
-;; dotfile configuration, with many modifications for my own use.
-;; The original configuration can be found here, and any
-;; incidental brilliance you will find in this mess is due
-;; to her code, not mine:
-;; https://github.com/bodil/ohai-emacs
-
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;; Commentary:
 
 ;;; Code:
 
-;; We only run on Emacs 24.4 or higher
-(when (or (< emacs-major-version 24)
-          (and (= emacs-major-version 24) (< emacs-minor-version 4)))
-  (x-popup-dialog
-   t `(,(format "Sorry, you need GNU Emacs version 24.4 or higher.
+(require 'cl)
 
-Your installed Emacs reports:
-%s" (emacs-version))
-       ("OK :(" . t)))
-  (save-buffers-kill-emacs t))
+;; Bail if we're not using a current version of emacs
 
-;; Initialize the package system
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
 (package-initialize)
 
-;; No splash screen
-(setq inhibit-startup-message t)
+(when (< emacs-major-version 24)
+  (error "Need at least Emacs 24+ for these init scripts to work!"))
 
-;; Set the hostname
-(setq hostname (replace-regexp-in-string
-                "\\(^[[:space:]\n]*\\|[[:space]\n]*$\\)" ""
-                (with-output-to-string
-                  (call-process "hostname" nil standard-output))))
+;; Base system initialization
+(setq user-full-name "Jan Van Uytven")
+(setq user-mail-address "ysgard@gmail.com")
 
-;; Set the dotfiles dir, found by getting the path to init.el
-(setq dotfiles-dir (file-name-directory
-                    (or (buffer-file-name) (file-chase-links load-file-name))))
+;; Call in the core - these files define the basic emacs experience
+;; and sets up infrastructure for the misc modules to take advantage
+;; of, in particular the package loading.
+(add-to-list 'load-path "~/.emacs.d/ys")
+(require 'ys-package)
+(require 'ys-lib)
+(require 'ys-base)
+(require 'ys-display)
 
-;; Load the library packages in corelib
-(add-to-list 'load-path (concat dotfiles-dir "corelib"))
+;; Call in the misc modules - these are language or feature-specific
+;; files that shouldn't depend on each other but might depend on
+;; stuff in core.
+(add-to-list 'load-path "~/.emacs.d/misc")
+(require 'ys-evil)
+(require 'ys-rust)
+(require 'ys-lisp)
 
-;; Load the configuration modules
-(add-to-list 'load-path (concat dotfiles-dir "modules"))
-
-;; Define location of autoloads and custom definitions
-(setq autoload-file (concat dotfiles-dir "loaddefs.el"))
-(setq custom-file (concat dotfiles-dir "custom.el"))
-
-;; Load any custom settings
-(load custom-file 'noerror)
-
-;; Load the corelibs
-(require 'core-lib)
-(require 'core-package)
-
-(require 'core-set-path)
-
-;; Load the enabled modules
-
-;; Load the user's config, if it exists
-(load (concat dotfiles-dir "user.el") 'noerror)
+(provide 'init)
+;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (zenburn-theme yaml-mode white-sand-theme web-mode tronesque-theme treemacs-evil treemacs terraform-mode tagedit sunny-day-theme solarized-theme smex smart-mode-line-powerline-theme smart-mode-line soft-stone-theme silkworm-theme rainbow-delimiters racer professional-theme perspective org-bullets oldlace-theme occidental-theme nord-theme multi-term molokai-theme monokai-theme moe-theme mode-icons material-theme magit linum-relative leuven-theme kibit-helper key-chord js2-mode intero ido-vertical-mode ido-completing-read+ hydra groovy-mode google-this google-maps github-theme ghc flycheck-rust flycheck flx-ido fireplace exec-path-from-shell evil-leader evil dockerfile-mode docker dtrt-indent d-mode cyberpunk-theme cql-mode company-lsp company-ghci company color-theme-sanityinc-tomorrow color-theme-modern clojure-mode-extra-font-locking cider cargo blackboard-theme auto-complete alect-themes abyss-theme)))
+ '(tramp-syntax (quote default) nil (tramp)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

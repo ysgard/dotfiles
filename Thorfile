@@ -194,11 +194,11 @@ class Dot < Thor
     Dir['emacs.dev/*.el'].each do |file|
       link_file("#{file}", "~#{@user}/.#{file}", options[:force])
     end
-    Dir['emacs.dev/corelib/*.el'].each do |file|
+    Dir['emacs.dev/ys/*.el'].each do |file|
       f = file.split('/')[1..-1].join('/')
       link_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
     end
-    Dir['emacs.dev/modules/*.el'].each do |file|
+    Dir['emacs.dev/misc/*.el'].each do |file|
       f = file.split('/')[1..-1].join('/')
       link_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
     end
