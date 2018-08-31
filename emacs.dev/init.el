@@ -7,22 +7,25 @@
 
 ;;; Code:
 
-(require 'cl)
-
 ;; Bail if we're not using a current version of emacs
+(when (or (< emacs-major-version 24)
+          (and (= emacs-major-version 24) (< emacs-minor-version 4)))
+  (x-popup-dialog
+   t `(,(format "Sorry, you need GNU Emacs version 24.4 or higher 
+to use these dotfiles.
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
+You've got %s" (emacs-version))
+       ("OK :(" . t)))
+  (save-buffers-kill-emacs t))
 
-(when (< emacs-major-version 24)
-  (error "Need at least Emacs 24+ for these init scripts to work!"))
-
-;; Base system initialization
+;; Base system variables
 (setq user-full-name "Jan Van Uytven")
 (setq user-mail-address "ysgard@gmail.com")
+(setq hostname (replace-regexp-in-string "\\(^[[:space:]\n]*\\|[[:space:]\n]*$\\)" ""
+                                         (with-output-to-string
+                                           (call-process "hostname" nil standard-output))))
+(setq dotfiles-dir (file-name-directory
+                    (or (buffer-file-name) (file-chase-links load-file-name))))
 
 ;; Call in the core - these files define the basic emacs experience
 ;; and sets up infrastructure for the misc modules to take advantage
@@ -38,7 +41,7 @@
 ;; stuff in core.
 (add-to-list 'load-path "~/.emacs.d/misc")
 (require 'ys-evil)
-(require 'ys-rust)
+;;(require 'ys-rust)
 (require 'ys-lisp)
 
 (provide 'init)

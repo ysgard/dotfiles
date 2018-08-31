@@ -5,6 +5,10 @@
 ;;; EVIL settings unlock the power of Vim!! Bwahahaha
 
 ;;; Code:
+
+(use-package evil)
+(use-package evil-leader)
+
 (require 'evil)
 (require 'evil-leader)
 (global-evil-leader-mode)

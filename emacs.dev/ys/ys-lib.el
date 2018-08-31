@@ -14,6 +14,16 @@
 
 ;;; Code:
 
+(require 'ys-package)
+
+;; New standard library
+;; f.el    - files and paths  https://github.com/rejeep/f.el
+;; s.el    - strings          https://github.com/magnars/s.el
+;; dash.el - lists            https://github.com/magnars/dash.el
+(use-package f)
+(use-package s)
+(use-package dash)
+
 (defmacro ys/with-system (type &rest body)
   "Evaluate BODY if `system-type' equals TYPE."
   (declare (indent defun))

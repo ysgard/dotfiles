@@ -17,18 +17,9 @@
 ;;(defvaralias 'ysgard-theme 'cyberpunk)
 (defvaralias 'ysgard-theme 'molokai)
 ;; (defvaralias 'ysgard-theme 'monokai)
-;; (defvaralias 'ysgard-theme 'deeper-blue)
-;; (defvaralias 'ysgard-theme 'blackboard)
-;; (defvaralias 'ysgard-theme 'feng-shui)
-;; (defvaralias 'ysgard-theme 'greiner)
-;; (defvaralias 'ysgard-theme 'infodoc)
-;; (defvaralias 'ysgard-theme 'github)
-;; (defvaralias 'ysgard-theme 'pierson)
-;; (defvaralias 'ysgard-theme 'rotor)
-;; (defvaralias 'ysgard-theme 'solarized-light) ;; default
-;; (defvaralias 'ysgard-theme 'solarized-light)
-;; (defvaralias 'ysgard-theme 'white-sand) 
 
+(use-package molokai-theme)
+(use-package monokai-theme)
 
 ;; Set font according to the host we are on
 (when (search "zen" (system-name))
@@ -104,8 +95,6 @@
 (setq mouse-wheel-progressive-speed nil) ; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ; scroll window under mouse
 (setq scroll-step 5) ; keyboard scroll one line at a time
-
-
 
 ;; Set the font, if we've defined it
 (if (boundp 'ysgard-font-face)
