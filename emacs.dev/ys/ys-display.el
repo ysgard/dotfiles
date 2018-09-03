@@ -15,8 +15,8 @@
 ;; Define which theme we want - if it's present, it will
 ;; be loaded later
 ;;(defvaralias 'ysgard-theme 'cyberpunk)
-(defvaralias 'ysgard-theme 'molokai)
-;; (defvaralias 'ysgard-theme 'monokai)
+;;(defvaralias 'ysgard-theme 'molokai)
+(defvaralias 'ysgard-theme 'monokai)
 
 (use-package molokai-theme)
 (use-package monokai-theme)

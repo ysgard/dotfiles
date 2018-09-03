@@ -49,5 +49,8 @@
 ;; Show all options when running apropos
 (setq apropos-do-all t)
 
+;; Unbind C-l so we can use it as a prefix key
+(global-unset-key "\C-l")
+
 (provide 'ys-base)
 ;;; ys-base ends here

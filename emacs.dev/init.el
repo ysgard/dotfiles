@@ -43,6 +43,10 @@ You've got %s" (emacs-version))
 (require 'ys-evil)
 ;;(require 'ys-rust)
 (require 'ys-lisp)
+(require 'ys-magit)
+(require 'ys-ido)
+(require 'ys-treemacs)
+(require 'ys-flycheck)
 
 (provide 'init)
 ;;; init.el ends here
