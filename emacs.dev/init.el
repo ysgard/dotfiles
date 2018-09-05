@@ -54,6 +54,7 @@ You've got %s" (emacs-version))
 (require 'ys-javascript)
 (require 'ys-markdown)
 (require 'ys-smart-mode-line)
+(require 'ys-emojify)
 
 (provide 'init)
 ;;; init.el ends here
