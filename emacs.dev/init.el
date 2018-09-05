@@ -41,17 +41,19 @@ You've got %s" (emacs-version))
 ;; stuff in core.
 (add-to-list 'load-path "~/.emacs.d/misc")
 (require 'ys-evil)
-;;(require 'ys-rust)
+(require 'ys-company)
+(require 'ys-flycheck)
+(require 'ys-lsp)
+(require 'ys-rust)
 (require 'ys-lisp)
 (require 'ys-magit)
 (require 'ys-ido)
 (require 'ys-treemacs)
-(require 'ys-flycheck)
 (require 'ys-codestyle)
 (require 'ys-html)
 (require 'ys-javascript)
-;; (require 'ys-js-web-mode)
-;; (require 'ys-markdown)
+(require 'ys-markdown)
+(require 'ys-smart-mode-line)
 
 (provide 'init)
 ;;; init.el ends here
@@ -60,9 +62,12 @@ You've got %s" (emacs-version))
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" default)))
  '(package-selected-packages
    (quote
-    (zenburn-theme yaml-mode white-sand-theme web-mode tronesque-theme treemacs-evil treemacs terraform-mode tagedit sunny-day-theme solarized-theme smex smart-mode-line-powerline-theme smart-mode-line soft-stone-theme silkworm-theme rainbow-delimiters racer professional-theme perspective org-bullets oldlace-theme occidental-theme nord-theme multi-term molokai-theme monokai-theme moe-theme mode-icons material-theme magit linum-relative leuven-theme kibit-helper key-chord js2-mode intero ido-vertical-mode ido-completing-read+ hydra groovy-mode google-this google-maps github-theme ghc flycheck-rust flycheck flx-ido fireplace exec-path-from-shell evil-leader evil dockerfile-mode docker dtrt-indent d-mode cyberpunk-theme cql-mode company-lsp company-ghci company color-theme-sanityinc-tomorrow color-theme-modern clojure-mode-extra-font-locking cider cargo blackboard-theme auto-complete alect-themes abyss-theme)))
+    (markdown-mode zenburn-theme yaml-mode white-sand-theme web-mode tronesque-theme treemacs-evil treemacs terraform-mode tagedit sunny-day-theme solarized-theme smex smart-mode-line-powerline-theme smart-mode-line soft-stone-theme silkworm-theme rainbow-delimiters racer professional-theme perspective org-bullets oldlace-theme occidental-theme nord-theme multi-term molokai-theme monokai-theme moe-theme mode-icons material-theme magit linum-relative leuven-theme kibit-helper key-chord js2-mode intero ido-vertical-mode ido-completing-read+ hydra groovy-mode google-this google-maps github-theme ghc flycheck-rust flycheck flx-ido fireplace exec-path-from-shell evil-leader evil dockerfile-mode docker dtrt-indent d-mode cyberpunk-theme cql-mode company-lsp company-ghci company color-theme-sanityinc-tomorrow color-theme-modern clojure-mode-extra-font-locking cider cargo blackboard-theme auto-complete alect-themes abyss-theme)))
  '(tramp-syntax (quote default) nil (tramp)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
