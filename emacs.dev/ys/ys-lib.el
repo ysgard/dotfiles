@@ -118,5 +118,31 @@
   (global-linum-mode 0)
   (linum-mode 0))
 
+;; Despite the names, these were all taken from Ohai Emacs.  Credit goes
+;; to Bodil Stokke for these.
+
+(defun ys/exec (command)
+  "Run a shell COMMAND and return its output as a string, whitespace-trimmed."
+  (s-trim (shell-command-to-string command)))
+
+(defun ys/exec-with-rc (command &rest args)
+  "Run a shell COMMAND and return a list containing two values: its return code and its whitespace trimmed output."
+  (with-temp-buffer
+    (list (apply 'call-process command nil (current-buffer) nil args)
+          (s-trim (buffer-string)))))
+
+(defun ys/is-exec (command)
+  "Return true if COMMAND is an executable on the system search path."
+  (f-executable? (s-trim (shell-command-to-string (s-concat "which " command)))))
+
+(defun ys/resolve-exec (command)
+  "If COMMAND is an executable on the system search path, return its absolute path, or nil."
+  (-let [path (s-trim (shell-command-to-string (s-concat "which " command)))]
+    (when (f-executable? path) path)))
+
+(defun ys/exec-if-exec (command args)
+  "If COMMAND satisfies `ys/is-exec', run it with ARGS and return its output as per `ys/exec', or nil."
+  (when (ys/is-exec command) (ys/exec (s-concat command " " args))))
+
 (provide 'ys-lib)
 ;;; ys-lib.el ends here

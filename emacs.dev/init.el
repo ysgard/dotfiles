@@ -47,6 +47,11 @@ You've got %s" (emacs-version))
 (require 'ys-ido)
 (require 'ys-treemacs)
 (require 'ys-flycheck)
+(require 'ys-codestyle)
+(require 'ys-html)
+(require 'ys-javascript)
+;; (require 'ys-js-web-mode)
+;; (require 'ys-markdown)
 
 (provide 'init)
 ;;; init.el ends here

@@ -6,14 +6,6 @@
 
 ;;; Code:
 
-;; Tabs and indents
-(setq-default tab-width 4
-              indent-tabs-mode nil) ; Spaces instead of tabs
-
-;; This should probably belong in another file, but
-;; as it relies on no externals... meh
-;; Set tab and style for C code
-(setq-default c-basic-offset 4 c-default-style "bsd")
 
 ;; Always ask for y/n instead of 'yes/no'
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -25,11 +17,6 @@
       x-select-enable-primary t
       save-interprogram-paste-before-kill t
       mouse-yank-at-point t)
-      
-;; Set default text behaviour
-(setq-default word-wrap t)
-; (global-visual-line-mode t) ; Same, but breaks long lines into semantic units
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; We prefer UTF-8
 (set-terminal-coding-system 'utf-8)
@@ -67,9 +54,6 @@
 ;; Shortcut for query-replace-regexp
 (defalias 'qrr 'query-replace-regexp)
 
-;; Always indent on RET
-(define-key global-map (kbd "RET") 'newline-and-indent)
-
 ;; Better keymaps for isearch
 (global-set-key (kbd "M-s") 'isearch-forward-regexp)
 (global-set-key (kbd "M-S") 'isearch-backward-regexp)
@@ -91,9 +75,6 @@
 (global-set-key (kbd "M-<left>") 'ys/previous-user-buffer)
 (global-set-key (kbd "M-<down>") 'scroll-up-command)
 (global-set-key (kbd "M-<up>") 'scroll-down-command)
-
-
-
 
 (provide 'ys-base)
 ;;; ys-base ends here
