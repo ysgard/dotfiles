@@ -180,30 +180,27 @@ class Dot < Thor
   desc 'install_emacs_dev', 'Installs emacs.dev into ~/.emacs.dev'
   method_option :force,
                 :type => :boolean,
-                :default => true,
+                :default => false,
                 :desc => 'Overwrite existing links'
-  method_option :link_only,
+  method_option :clean,
                 :type => :boolean,
                 :default => false,
-                :desc => 'Only link config files, don\'t install repos'
+                :desc => 'Delete old .emacs.dev'
   def install_emacs_dev
-    if !options[:link_only]
+    if options[:clean]
       remove_file "~#{@user}/.emacs.dev"
     end
     empty_directory "~#{@user}/.emacs.dev"
     Dir['emacs.dev/*.el'].each do |file|
-      link_file("#{file}", "~#{@user}/.#{file}", options[:force])
+      copy_file("#{file}", "~#{@user}/.#{file}", options[:force])
     end
     Dir['emacs.dev/ys/*.el'].each do |file|
       f = file.split('/')[1..-1].join('/')
-      link_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
+      copy_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
     end
     Dir['emacs.dev/misc/*.el'].each do |file|
       f = file.split('/')[1..-1].join('/')
-      link_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
-    end
-    # Install custom packages
-    if !options[:link_only]
+      copy_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
     end
   end
 
