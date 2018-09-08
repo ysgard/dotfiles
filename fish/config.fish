@@ -31,6 +31,9 @@ set -x GOPATH ~/Go
 # $HOME/bin 
 set -x PATH $HOME/bin /usr/local/bin /usr/local/sbin $PATH
 
+# Tweak the prompt
+set -g theme_newline_cursor yes
+
 # Source local fish file, if it exists
 if test -e ~/.config/fish/config-local.fish
   . ~/.config/fish/config-local.fish

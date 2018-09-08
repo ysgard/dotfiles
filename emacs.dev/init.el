@@ -55,6 +55,7 @@ You've got %s" (emacs-version))
 (require 'ys-markdown)
 (require 'ys-smart-mode-line)
 (require 'ys-emojify)
+(require 'ys-yaml)
 
 (provide 'init)
 ;;; init.el ends here

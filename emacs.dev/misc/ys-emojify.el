@@ -15,5 +15,5 @@
 ;; Patch emojify to replace emoji everywhere in programming modes.
 (defun emojify-valid-prog-context-p (beg end) 't)
 
-(provide ys-emojify)
+(provide 'ys-emojify)
 ;;; ys-emojify.el ends here
