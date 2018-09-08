@@ -38,3 +38,8 @@ set -g theme_newline_cursor yes
 if test -e ~/.config/fish/config-local.fish
   . ~/.config/fish/config-local.fish
 end
+
+# If we're using Tilix, make sure to source vte.sh
+if test -n "$TILIX_ID" 
+  /bin/bash /etc/profile.d/vte.sh
+end
