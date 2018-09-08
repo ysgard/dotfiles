@@ -146,34 +146,32 @@ class Dot < Thor
   desc 'install_emacs', 'Installs emacs config into ~/.emacs.d'
   method_option :force,
     :type => :boolean,
-    :default => true,
+    :default => false,
     :desc => "Overwrite existing links"
-  method_option :link_only,
+  method_option :clean,
     :type => :boolean,
     :default => false,
-    :desc => "Only link config files, don't install repos"
+    :desc => "Remove old .emacs.d"
   def install_emacs
-    if !options[:link_only]
+    if options[:clean]
       remove_file "~#{@user}/.emacs.d"
     end
     empty_directory "~#{@user}/.emacs.d"
-    link_file("#{Dir.pwd}/emacs.d/init.el", "~#{@user}/.emacs.d/init.el",
+    copy_file("#{Dir.pwd}/emacs.d/init.el", "~#{@user}/.emacs.d/init.el",
               options[:force])
     Dir['emacs.d/ysgard/*'].each do |file|
       f = file.split('/')[1..-1].join('/')
-      link_file("#{file}",
+      copy_file("#{file}",
                 "~#{@user}/.emacs.d/#{f}",
                 options[:force])
     end
     # Install custom packages
-    if !options[:link_only]
-      run "git clone https://github.com/emacs-lsp/lsp-mode" \
+    run "git clone https://github.com/emacs-lsp/lsp-mode" \
         " ~#{@user}/.emacs.d/lsp-mode"
-      run "git clone https://github.com/emacs-lsp/lsp-ui" \
+    run "git clone https://github.com/emacs-lsp/lsp-ui" \
         " ~#{@user}/.emacs.d/lsp-ui"
-      run "git clone https://github.com/emacs-lsp/lsp-rust" \
+    run "git clone https://github.com/emacs-lsp/lsp-rust" \
         " ~#{@user}/.emacs.d/lsp-rust"
-    end
   end
 
   # Install development emacs environment
