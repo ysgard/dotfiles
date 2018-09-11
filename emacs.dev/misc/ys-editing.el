@@ -129,5 +129,11 @@
   (volatile-highlights-mode t)
   :diminish volatile-highlights-mode)
 
+;; Make sure we never lose the cursor
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1))
+
 (provide 'ys-editing)
 ;;; ys-editing.el ends here
