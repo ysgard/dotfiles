@@ -36,6 +36,11 @@
 ;; Show all options when running apropos
 (setq apropos-do-all t)
 
+;; Load $PATH
+(use-package exec-path-from-shell)
+(when (memq window-system '(mac ns x))
+ (exec-path-from-shell-initialize))
+
 ;; Unbind C-l so we can use it as a prefix key
 (global-unset-key "\C-l")
 
