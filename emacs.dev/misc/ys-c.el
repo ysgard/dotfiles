@@ -34,9 +34,6 @@
 
 (use-package flycheck-irony
   :after (company flycheck)
-  :config
-  (require 'company-gtags)
-  (push company-backends 'company-gtags)
   :hook (flycheck-mode . flycheck-irony-setup))
 
 (add-hook 'c-mode-hook (lambda ()

@@ -14,7 +14,7 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 (package-initialize)
-(require 'cl)
+(require 'cl-lib)
 
 (when (or (< emacs-major-version 24)
           (and (= emacs-major-version 24) (< emacs-minor-version 4)))
@@ -59,13 +59,15 @@ You've got %s" (emacs-version))
 ;; (require 'ys-narrows)
 (require 'ys-treemacs)
 (require 'ys-codestyle)
-(require 'ys-html)
 (require 'ys-javascript)
 (require 'ys-markdown)
 (require 'ys-smart-mode-line)
 (require 'ys-emojify)
 (require 'ys-yaml)
 (require 'ys-c)
+(require 'ys-ruby)
+(require 'ys-project)
+(require 'ys-dired)
 
 (provide 'init)
 ;;; init.el ends here

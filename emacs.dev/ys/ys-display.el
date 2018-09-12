@@ -12,14 +12,13 @@
 
 ;;; Code:
 
-;; Define which theme we want - if it's present, it will
-;; be loaded later
-;;(defvaralias 'ysgard-theme 'cyberpunk)
-;;(defvaralias 'ysgard-theme 'molokai)
-(defvaralias 'ysgard-theme 'monokai)
 
-(use-package molokai-theme)
-(use-package monokai-theme)
+;; Load theme.  Good options are monokai-theme, molokai-theme and
+;; cyberpunk-theme
+(use-package dracula-theme
+  :ensure t
+  :config
+  (load-theme 'dracula t))
 
 ;; Set font according to the host we are on
 (when (search "zen" (system-name))
@@ -101,9 +100,6 @@
     (progn
       (defvar ysgard-font (concat ysgard-font-face " " ysgard-font-size))
       (add-to-list 'default-frame-alist (cons 'font ysgard-font))))
-
-;; Load the theme, if it's present
-(load-theme (indirect-variable 'ysgard-theme) t)
 
 ;; Set the initial frame size to something reasonable
 (add-to-list 'initial-frame-alist '(width . 80))

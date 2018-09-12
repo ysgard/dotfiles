@@ -81,5 +81,10 @@
 (global-set-key (kbd "M-<down>") 'scroll-up-command)
 (global-set-key (kbd "M-<up>") 'scroll-down-command)
 
+;; Terminals
+
+(bind-key "C-!" 'ys/eshell-here)
+
+
 (provide 'ys-base)
 ;;; ys-base ends here

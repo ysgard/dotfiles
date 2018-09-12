@@ -20,7 +20,6 @@
   :config (ido-ubiquitous-mode 1))
 
 ;; smex provides an ido-like interface to M-x
-
 (use-package smex
   :config (smex-initialize)
   :bind (("M-x" . smex)

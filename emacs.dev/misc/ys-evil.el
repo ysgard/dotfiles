@@ -42,6 +42,7 @@
 			      (bc-menu-mode . emacs)
 			      (magit-branch-manager-mode . emacs)
 			      (dired-mode . normal)
+            (ibuffer-mode . normal)
 			      (wdired-mode . normal)
                   (haskell-interactive-mode . emacs)
                   (cider-repl-mode . emacs)
