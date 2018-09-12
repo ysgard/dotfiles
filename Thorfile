@@ -15,6 +15,8 @@ class Dot < Thor
                 nvim
                 emacs.d
                 emacs.new
+                zshrc
+                zshenv
                 ]
 
 
@@ -48,6 +50,35 @@ class Dot < Thor
     inside("~#{@user}/.vim") do
       run "~#{@user}/.vim/update.sh"
     end
+  end
+
+  desc "install_zsh", "Install zsh config file, oh-my-zsh, and plugins into #{@user}'s home directory"
+  method_option :force,
+    :type => :boolean,
+    :default => false,
+    :desc => "Overwrite existing files"
+  method_option :clean,
+    :type => :boolean,
+    :default => false,
+    :desc => "Remove zsh configuration"
+  method_option :with_ohmyzsh,
+    :type => :boolean,
+    :default => false,
+    :desc => "Install oh-my-zsh and plugins"
+  def install_zsh
+    if options[:clean]
+      remove_file "~#{@user}/.zshrc"
+      remove_file "~#{@user}/.zshenv"
+      remove_file "~#{@user}/.oh-my-zsh"
+      remove_file "~#{@user}/.zsh"
+    end
+    if options[:with_ohmyzsh]
+      run "curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | bash"
+      run "git clone https://github.com/zsh-users/zsh-autosuggestions ~#{@user}/.zsh/zsh-autosuggestions"
+      run "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~#{@user}/.zsh/zsh-syntax-highlighting"
+    end
+    copy_file("#{Dir.pwd}/zshrc", "~#{@user}/.zshrc", options[:force])
+    copy_file("#{Dir.pwd}/zshenv", "~#{@user}/.zshenv", options[:force])
   end
 
   desc "install_nvim", "Install nvim config files into #{@user}'s home directory"
