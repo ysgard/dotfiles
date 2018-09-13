@@ -36,6 +36,9 @@
 ;; Show all options when running apropos
 (setq apropos-do-all t)
 
+;; If a file changed on disk, prompt us to refresh
+(global-auto-revert-mode t)
+
 ;; Load $PATH
 (use-package exec-path-from-shell)
 (when (memq window-system '(mac ns x))
