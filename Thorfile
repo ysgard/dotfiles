@@ -15,6 +15,7 @@ class Dot < Thor
                 nvim
                 emacs.d
                 emacs.new
+                tmux.conf
                 zshrc
                 zshenv
                 ]
@@ -52,6 +53,30 @@ class Dot < Thor
     end
   end
 
+  desc "install_tmux", "Installs tmux config files into #{@user}'s home dir, and optionally plugin manager and plugins"
+  method_option :force,
+                 :type => :boolean,
+                 :default => false,
+                 :desc => "Don't prompt when overwriting"
+  method_option :everything,
+                 :type => :boolean,
+                 :default => false,
+                 :desc => "Install tmux plugins and manager"
+  method_option :clean,
+                 :type => :boolean,
+                 :default => false,
+                 :desc => "Remove existing config"
+  def install_tmux
+    if options[:clean]
+      remove_file "~#{@user}/.tmux.conf"
+      remove_file "~#{@user}/.tmux"
+    end
+    if options[:everything]
+      run "git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm"
+    end
+    copy_file("#{Dir.pwd}/tmux.conf", "~#{@user}/.tmux.conf", options[:force])
+  end
+      
   desc "install_zsh", "Install zsh config file, oh-my-zsh, and plugins into #{@user}'s home directory"
   method_option :force,
     :type => :boolean,
@@ -61,10 +86,10 @@ class Dot < Thor
     :type => :boolean,
     :default => false,
     :desc => "Remove zsh configuration"
-  method_option :with_ohmyzsh,
+  method_option :everything,
     :type => :boolean,
     :default => false,
-    :desc => "Install oh-my-zsh and plugins"
+    :desc => "Install oh-my-zsh and plugins too"
   def install_zsh
     if options[:clean]
       remove_file "~#{@user}/.zshrc"
@@ -72,7 +97,7 @@ class Dot < Thor
       remove_file "~#{@user}/.oh-my-zsh"
       remove_file "~#{@user}/.zsh"
     end
-    if options[:with_ohmyzsh]
+    if options[:everything]
       run "curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | bash"
       run "git clone https://github.com/zsh-users/zsh-autosuggestions ~#{@user}/.zsh/zsh-autosuggestions"
       run "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~#{@user}/.zsh/zsh-syntax-highlighting"
