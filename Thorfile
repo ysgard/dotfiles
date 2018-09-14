@@ -120,6 +120,16 @@ class Dot < Thor
     end
   end
 
+  desc "install_nerd_fonts", "Install the Nerd fonts (ryanoasis/nerd-fonts)"
+  method_options :force => :boolean
+  def install_nerd_fonts
+    empty_directory "~#{@user}/src"
+    run "git clone https://github.com/ryanoasis/nerd-fonts --depth=1 ~#{@user}/src/nerd-fonts"
+    inside("~#{@user}/src/nerd-fonts") do
+      run './install.sh'
+    end
+  end
+
   desc "install_fish", "Install fish, oh-my-fish, and bobthefish"
   method_options :force => :boolean
   def install_fish
