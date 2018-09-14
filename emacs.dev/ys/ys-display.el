@@ -15,10 +15,10 @@
 
 ;; Load theme.  Good options are monokai-theme, molokai-theme and
 ;; cyberpunk-theme
-(use-package dracula-theme
+(use-package monokai-theme
   :ensure t
   :config
-  (load-theme 'dracula t))
+  (load-theme 'monokai t))
 
 ;; Set font according to the host we are on
 (when (search "zen" (system-name))
