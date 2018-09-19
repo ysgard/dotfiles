@@ -10,6 +10,17 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+(require 'dired)
+(global-set-key (kbd "C-l d") 'dired-jump)
+
+;; Reuse dired buffers and avoid unnecessary proliferation
+(use-package dired-single
+  :config
+  (define-key dired-mode-map (kbd "RET") 'dired-single-buffer))
+
+(use-package dired-icon
+  :hook ((dired-mode . dired-icon-mode)))
+
 ;; A function for deleting the file being edited
 ;; A bit dangerous, so not bound to any key.
 ;; Run it with M-x delete-current-buffer-file

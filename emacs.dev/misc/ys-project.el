@@ -11,7 +11,9 @@
   :commands projectile-global-mode
   :config
   (projectile-global-mode)
-  :bind ("C-c C-f" . projectile-find-file))
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-l p") 'projectile-command-map)
+  :bind (("C-c C-f" . projectile-find-file)))
 
 ;; Use ibuffer instead of list-buffers and sort by project
 (use-package ibuffer-projectile
