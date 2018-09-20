@@ -57,5 +57,16 @@
   (key-chord-define evil-insert-state-map ",," 'evil-normal-state)
   (key-chord-define evil-replace-state-map ",," 'evil-normal-state))
 
+;; Unset space in normal mode, so we can bind a bunch of useful commands to
+;; <space>-<letter>
+(define-key evil-motion-state-map " " nil)
+
+(define-key evil-motion-state-map (kbd "SPC b") 'ibuffer)
+(define-key evil-motion-state-map (kbd "SPC o") 'other-window)
+(define-key evil-motion-state-map (kbd "SPC k") 'kill-current-buffer)
+(define-key evil-motion-state-map (kbd "SPC n") 'next-buffer)
+(define-key evil-motion-state-map (kbd "SPC p") 'previous-buffer)
+(define-key evil-motion-state-map (kbd "SPC s") 'save-buffer)
+
 (provide 'ys-evil)
 ;;; ys-evil.el ends here

@@ -17,6 +17,7 @@
   :hook (rust-mode . cargo-minor-mode)
   :config
   (setq compilation-ask-about-save nil)
+  (add-hook 'cargo-minor-mode 'ansi-color-for-comint-mode-on)
   :bind (("C-c C-b" . cargo-process-build)
          ("C-c C-r" . cargo-process-run)
          ("C-c C-t" . cargo-process-test)

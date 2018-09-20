@@ -163,5 +163,11 @@ directory to make multiple eshell windows easier."
     (insert (concat "ls"))
     (eshell-send-input)))
 
+(require 'ansi-color)
+(defun  display-ansi-colors ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
+
 (provide 'ys-lib)
 ;;; ys-lib.el ends here

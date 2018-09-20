@@ -39,6 +39,10 @@
 ;; If a file changed on disk, prompt us to refresh
 (global-auto-revert-mode t)
 
+;; Interpret color codes in shells
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
 ;; Load $PATH
 (use-package exec-path-from-shell)
 (when (memq window-system '(mac ns x))

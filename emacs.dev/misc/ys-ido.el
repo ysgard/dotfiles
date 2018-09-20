@@ -42,6 +42,8 @@
         ;; ohai's example
         gc-cons-threshold 20000000))
 
+(define-key evil-motion-state-map (kbd "SPC f") 'ido-find-file)
+
 ;; Bind C-t to use ido to jump to a symbol in the current buffer.
 (require 'imenu)
 (defun ido-imenu ()
