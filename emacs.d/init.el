@@ -14,62 +14,62 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 (package-initialize)
+(require 'cl-lib)
 
-(when (< emacs-major-version 24)
-  (error "Need at least Emacs 24+ for these init scripts to work!"))
+(when (or (< emacs-major-version 24)
+          (and (= emacs-major-version 24) (< emacs-minor-version 4)))
+  (x-popup-dialog
+   t `(,(format "Sorry, you need GNU Emacs version 24.4 or higher 
+to use these dotfiles.
 
-;; Base system initialization
+You've got %s" (emacs-version))
+       ("OK :(" . t)))
+  (save-buffers-kill-emacs t))
+
+;; Base system variables
 (setq user-full-name "Jan Van Uytven")
 (setq user-mail-address "ysgard@gmail.com")
+(setq hostname (replace-regexp-in-string "\\(^[[:space:]\n]*\\|[[:space:]\n]*$\\)" ""
+                                         (with-output-to-string
+                                           (call-process "hostname" nil standard-output))))
+(setq dotfiles-dir (file-name-directory
+                    (or (buffer-file-name) (file-chase-links load-file-name))))
 
-;; Set the load path to include scripts in ~/.emacs.d
-(add-to-list 'load-path "~/.emacs.d/ysgard")
+;; Call in the core - these files define the basic emacs experience
+;; and sets up infrastructure for the misc modules to take advantage
+;; of, in particular the package loading.
+(add-to-list 'load-path "~/.emacs.d/ys")
+(require 'ys-package)
+(require 'ys-lib)
+(require 'ys-base)
+(require 'ys-display)
+(require 'ys-evil)
 
-;; Call the common lisp library (more code to play with, mmmm)
-(require 'cl)
+;; Call in the misc modules - these are language or feature-specific
+;; files that shouldn't depend on each other but might depend on
+;; stuff in core.
+(add-to-list 'load-path "~/.emacs.d/misc")
+(require 'ys-company)
+(require 'ys-flycheck)
+(require 'ys-lsp)
+(require 'ys-rust)
+(require 'ys-lisp)
+(require 'ys-magit)
+(require 'ys-ido)
+;; (require 'ys-narrows)
+(require 'ys-treemacs)
+(require 'ys-codestyle)
+(require 'ys-javascript)
+(require 'ys-markdown)
+(require 'ys-smart-mode-line)
+(require 'ys-emojify)
+(require 'ys-yaml)
+(require 'ys-c)
+(require 'ys-ruby)
+(require 'ys-project)
+(require 'ys-dired)
+(require 'ys-org)
+(require 'ys-lua)
 
-;; Call in some common utility functions - these should be function-agnostic, and
-;; are used ONLY to augment common functionality, not control packages or emacs
-;; behaviour.
-(load "ysgard-defuns.el")
-
-;; Load keybinds
-(load "ysgard-keybinds.el")
-
-;; Packages
-(load "ysgard-packages.el")
-
-;; Base settings (non-external)
-(load "ysgard-base.el")
-
-;; Display settings (eye candy!)
-(load "ysgard-display.el")
-
-;; Load trivial packages (must be loaded first)
-(load "ysgard-misc.el")
-
-;; Load settings for EVIL mode
-(when (require 'evil nil 'noerror)
-  (load "ysgard-evil.el"))
-
-;; Load Emacs language server packages
-;; (load "ysgard-lsp.el")
-
-;; Load settings for Rust
-(load "ysgard-rust.el")
-
-;; Load settings for Haskell
-(load "ysgard-haskell.el")
-
-;; Load settings for Javascript
-(load "ysgard-js.el")
-
-;; Load setting for lisp/clojure
-(load "ysgard-lisp.el")
-
-;; Load settings for Clojure
-(load "ysgard-clojure.el")
-
-(put 'dired-find-alternate-file 'disabled nil)
-
+(provide 'init)
 ;;; init.el ends here

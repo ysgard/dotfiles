@@ -29,8 +29,6 @@ class Dot < Thor
       next if @@dont_install.include?(file)
       link_file(file, "~#{@user}/.#{file}", options[:force])
     end
-    link_file("#{Dir.pwd}/fish/config.fish", "~#{@user}/.config/fish/config.fish", options[:force])
-    link_file("#{Dir.pwd}/fish/functions", "~#{@user}/.config/fish/functions", options[:force])
     if RUBY_PLATFORM.include?('darwin')
       link_file("#{Dir.pwd}/inputrc-osx", "~#{@user}/.inputrc", options[:force])
     end
@@ -209,39 +207,8 @@ class Dot < Thor
     run 'cargo install racer'
   end
 
-  desc 'install_emacs', 'Installs emacs config into ~/.emacs.d'
-  method_option :force,
-    :type => :boolean,
-    :default => false,
-    :desc => "Overwrite existing links"
-  method_option :clean,
-    :type => :boolean,
-    :default => false,
-    :desc => "Remove old .emacs.d"
-  def install_emacs
-    if options[:clean]
-      remove_file "~#{@user}/.emacs.d"
-    end
-    empty_directory "~#{@user}/.emacs.d"
-    copy_file("#{Dir.pwd}/emacs.d/init.el", "~#{@user}/.emacs.d/init.el",
-              options[:force])
-    Dir['emacs.d/ysgard/*'].each do |file|
-      f = file.split('/')[1..-1].join('/')
-      copy_file("#{file}",
-                "~#{@user}/.emacs.d/#{f}",
-                options[:force])
-    end
-    # Install custom packages
-    run "git clone https://github.com/emacs-lsp/lsp-mode" \
-        " ~#{@user}/.emacs.d/lsp-mode"
-    run "git clone https://github.com/emacs-lsp/lsp-ui" \
-        " ~#{@user}/.emacs.d/lsp-ui"
-    run "git clone https://github.com/emacs-lsp/lsp-rust" \
-        " ~#{@user}/.emacs.d/lsp-rust"
-  end
-
   # Install development emacs environment
-  desc 'install_emacs_dev', 'Installs emacs.dev into ~/.emacs.dev'
+  desc 'install_emacs_d', 'Installs emacs.d into ~/.emacs.d'
   method_option :force,
                 :type => :boolean,
                 :default => false,
@@ -250,21 +217,21 @@ class Dot < Thor
                 :type => :boolean,
                 :default => false,
                 :desc => 'Delete old .emacs.dev'
-  def install_emacs_dev
+  def install_emacs_d
     if options[:clean]
-      remove_file "~#{@user}/.emacs.dev"
+      remove_file "~#{@user}/.emacs.d"
     end
-    empty_directory "~#{@user}/.emacs.dev"
-    Dir['emacs.dev/*.el'].each do |file|
+    empty_directory "~#{@user}/.emacs.d"
+    Dir['emacs.d/*.el'].each do |file|
       copy_file("#{file}", "~#{@user}/.#{file}", options[:force])
     end
-    Dir['emacs.dev/ys/*.el'].each do |file|
+    Dir['emacs.d/ys/*.el'].each do |file|
       f = file.split('/')[1..-1].join('/')
-      copy_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
+      copy_file("#{file}", "~#{@user}/.emacs.d/#{f}", options[:force])
     end
-    Dir['emacs.dev/misc/*.el'].each do |file|
+    Dir['emacs.d/misc/*.el'].each do |file|
       f = file.split('/')[1..-1].join('/')
-      copy_file("#{file}", "~#{@user}/.emacs.dev/#{f}", options[:force])
+      copy_file("#{file}", "~#{@user}/.emacs.d/#{f}", options[:force])
     end
   end
 
