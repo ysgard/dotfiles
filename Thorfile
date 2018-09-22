@@ -14,7 +14,8 @@ class Dot < Thor
                 vim
                 nvim
                 emacs.d
-                emacs.new
+                emacs.dev
+		emacs.d.old
                 tmux.conf
                 zshrc
                 zshenv
@@ -27,7 +28,7 @@ class Dot < Thor
   def install
     Dir['*'].each do |file|
       next if @@dont_install.include?(file)
-      link_file(file, "~#{@user}/.#{file}", options[:force])
+      copy_file(file, "~#{@user}/.#{file}", options[:force])
     end
     if RUBY_PLATFORM.include?('darwin')
       link_file("#{Dir.pwd}/inputrc-osx", "~#{@user}/.inputrc", options[:force])
