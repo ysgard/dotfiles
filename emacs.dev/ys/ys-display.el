@@ -12,11 +12,13 @@
 
 ;;; Code:
 
+;; Treat all themes as safe.  Don't really want to do this, but
+;; second option to `load-theme` does bupkus.
+(setq custom-safe-themes t)
 
 ;; Load theme.  Good options are monokai-theme, molokai-theme and
 ;; cyberpunk-theme
 (use-package zenburn-theme
-  :ensure t
   :config
   (load-theme 'zenburn t))
 

@@ -43,12 +43,12 @@ You've got %s" (emacs-version))
 (require 'ys-lib)
 (require 'ys-base)
 (require 'ys-display)
+(require 'ys-evil)
 
 ;; Call in the misc modules - these are language or feature-specific
 ;; files that shouldn't depend on each other but might depend on
 ;; stuff in core.
 (add-to-list 'load-path "~/.emacs.d/misc")
-(require 'ys-evil)
 (require 'ys-company)
 (require 'ys-flycheck)
 (require 'ys-lsp)
@@ -68,6 +68,8 @@ You've got %s" (emacs-version))
 (require 'ys-ruby)
 (require 'ys-project)
 (require 'ys-dired)
+(require 'ys-org)
+(require 'ys-lua)
 
 (provide 'init)
 ;;; init.el ends here
