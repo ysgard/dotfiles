@@ -10,11 +10,9 @@
   (setq org-replace-disputed-keys t)
   ;; Allow embedded graphviz code
   (org-babel-do-load-languages
-   'org-babel-do-load-languages '((dot . t)))
+   'org-babel-load-languages '((dot . t)))
   ;; Always use visual-line-mode in org-mode, and wrap at 80
-  :hook (org-mode . (lambda ()
-                      (visual-line-mode 1)
-                      (set-visual-wrap-column 80))))
+  :hook (org-mode . (lambda () (org-indent-mode t))))
 
 (use-package org-bullets
   :after (org)
