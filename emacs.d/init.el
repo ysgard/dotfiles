@@ -70,6 +70,7 @@ You've got %s" (emacs-version))
 (require 'ys-dired)
 (require 'ys-org)
 (require 'ys-lua)
+(require 'ys-terraform)
 
 (provide 'init)
 ;;; init.el ends here
