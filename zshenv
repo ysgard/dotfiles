@@ -14,7 +14,7 @@ export LC_CTYPE=en_US.UTF-8
 export GOPATH=~/Go
 
 # Other Exports
-export PATH=/usr/local/bin:~/bin:/usr/local/sbin:$PATH
+export PATH=~/.local/bin:/usr/local/bin:~/bin:/usr/local/sbin:$PATH
 export HOMEBREW_GITHUB_API_TOKEN
 export WORKON_HOME
 
@@ -27,7 +27,6 @@ alias drm="docker ps -a | grep Exited | cut -d ' ' -f 1 | xargs docker rm"
 alias drmi='docker rmi $(docker images | grep "^<none>" | awk "{print $3}")'
 
 # Rust
-export PATH=~/.cargo/bin:$PATH
 if [[ -d $HOME/.cargo ]]; then
     source $HOME/.cargo/env
 fi
