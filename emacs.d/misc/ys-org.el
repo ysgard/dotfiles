@@ -8,6 +8,8 @@
   :config
   ;; Stop org-mode from hijacking shift-cursor keys
   (setq org-replace-disputed-keys t)
+  ;; Hide emphasis markers
+  (setq org-hide-emphasis-markers t)
   ;; Allow embedded graphviz code
   (org-babel-do-load-languages
    'org-babel-load-languages '((dot . t)))
