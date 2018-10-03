@@ -38,6 +38,7 @@ You've got %s" (emacs-version))
 ;; Call in the core - these files define the basic emacs experience
 ;; and sets up infrastructure for the misc modules to take advantage
 ;; of, in particular the package loading.
+(add-to-list 'load-path "~/.emacs.d/thirdparty")
 (add-to-list 'load-path "~/.emacs.d/ys")
 (require 'ys-package)
 (require 'ys-lib)

@@ -18,9 +18,10 @@
 
 ;; Load theme.  Good options are monokai-theme, molokai-theme and
 ;; cyberpunk-theme
-(use-package zenburn-theme
+(use-package cyberpunk-theme
   :config
-  (load-theme 'zenburn t))
+  (load-theme 'cyberpunk t))
+;; (load-theme 'tronesque t)
 
 ;; Set font according to the host we are on
 (when (search "zen" (system-name))
