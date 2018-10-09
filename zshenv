@@ -11,7 +11,7 @@ export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
 # Go stuff
-export GOPATH=~/Go
+export GOPATH=~/go
 
 # Other Exports
 export PATH=~/.local/bin:/usr/local/bin:~/bin:/usr/local/sbin:$PATH
