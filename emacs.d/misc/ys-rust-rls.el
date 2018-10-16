@@ -1,12 +1,13 @@
-;;; ys-rust.el --- Summary
+;;; ys-rust-rls.el --- Summary
 
 ;;; Rust support for Emacs
 
 ;;; Commentary:
 
-;;; All the goodness needed for Rust
-;;; rust-mode - highlighting and cargo support
-;;; 
+;;; Uses the rls, and works, but I find the rls too 'noisy' to use, and prefer
+;;; the more unobtrusive racer.
+
+;;; WARNING: Use this module, or ys-rust-racer.el, but not both.
 
 ;;; Code:
 
@@ -31,5 +32,5 @@
     :hook ((rust-mode . lsp-rust-enable)
            (rust-mode . flycheck-mode))))
 
-(provide 'ys-rust)
-;;; ys-rust.el ends here
+(provide 'ys-rust-rls)
+;;; ys-rust-rls.el ends here
