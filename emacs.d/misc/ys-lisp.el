@@ -53,5 +53,19 @@
 ;; Use M-. to jump to the definition of a symbol under the cursor
 (define-key emacs-lisp-mode-map (kbd "M-.") 'find-function-at-point)
 
+;; Use SLIME to interact with CCL/Quicklisp
+;; Install CCL into ~/ccl, Quicklisp into ~/quicklisp
+;; Make sure you install the quicklisp package :quicklisp-slime-helper
+(use-package slime
+  :config
+  (load (expand-file-name "~/quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program (expand-file-name "~/ccl/lx86cl64"))
+  (setq slime-contribs '(slime-fancy)))
+
+(use-package slime-company
+  :after (slime company)
+  :config
+  (slime-setup '(slime-company)))
+
 (provide 'ys-lisp)
 ;;; ys-lisp.el ends here
