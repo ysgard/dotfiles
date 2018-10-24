@@ -59,7 +59,7 @@
 (use-package slime
   :config
   (load (expand-file-name "~/quicklisp/slime-helper.el"))
-  (setq inferior-lisp-program (expand-file-name "~/ccl/lx86cl64"))
+  (setq inferior-lisp-program (expand-file-name "~/bin/ccl"))
   (setq slime-contribs '(slime-fancy)))
 
 (use-package slime-company
