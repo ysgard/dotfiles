@@ -25,12 +25,11 @@
   :after (org)
   :bind (:map org-mode-map ("C-c M-l" . org-cliplink)))
 
-
-
-
-
-
-
+;; Unbind alt-<arrow> keys to next-buffer and prev-buffer,
+;; as they have special meaning in org and it interferes with 
+;; the general navigation of buffers
+(define-key org-mode-map (kbd "M-<right>") nil)
+(define-key org-mode-map (kbd "M-<left>") nil)
 
 (provide 'ys-org)
 ;;; ys-org.el ends here
