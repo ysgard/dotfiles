@@ -54,17 +54,18 @@ class Dot < Thor
 
   desc "install_clozure", "Installs Clozure Common Lisp (CCL) and Quicklisp, putting it into ~/ccl and ~/quicklisp, and install slime-helper."
   method_option :clean,
-                  :type => :boolean,
-                  :default => false,
-                  :desc => "Remove existing config"
+                :type => :boolean,
+                :default => false,
+                :desc => "Remove existing config"
   def install_clozure
     version = "1.11.5"
     base_download_url = "https://github.com/Clozure/ccl/releases/download/v#{version}/ccl-#{version}"
-    ql_install = "(quicklisp-quickstart:install :path \"~#{@user}/quicklisp\")"
+    ql_install = "(progn (quicklisp-quickstart:install :path \"~#{@user}/quicklisp\") (ccl::quit))"
     if options[:clean]
       remove_file "~#{@user}/ccl"
       remove_file "~#{@user}/quicklisp"
       remove_file "~#{@user}/bin/ccl"
+      remove_file "~#{@user}/.ccl-init.lisp"
     end
     empty_directory "~#{@user}/bin"
     # Install Clozure
@@ -75,6 +76,7 @@ class Dot < Thor
     end
     inside("~#{@user}") { run "tar zxvf ~#{@user}/ccl.tar.gz" }
     if RUBY_PLATFORM.include?('darwin')
+      link_file("~#{@user}/ccl/dx86cl64", "~#{@user}/bin/ccl", :force)
     else
       link_file("~#{@user}/ccl/lx86cl64", "~#{@user}/bin/ccl", :force)
     end
@@ -83,8 +85,9 @@ class Dot < Thor
     run "curl -L -o ~#{@user}/ccl/quicklisp.lisp https://beta.quicklisp.org/quicklisp.lisp"
     inside("~#{@user}/ccl") do
       run "~#{@user}/bin/ccl -l quicklisp.lisp -e '#{ql_install}'"
-      run "~#{@user}/bin/ccl -l quicklisp.lisp -e '(ql:add-to-init-file)'"
-      run "~#{@user}/bin/ccl -l quicklisp.lisp -e '(ql:quickload \"quicklisp-slime-helper\")'"
+      run "~#{@user}/bin/ccl -l ~#{@user}/quicklisp/setup.lisp -e '(progn (ql:add-to-init-file) (ccl::quit))'"
+      run "~#{@user}/bin/ccl -l ~#{@user}/quicklisp/setup.lisp -e \
+          '(progn (ql:quickload \"quicklisp-slime-helper\") (ccl::quit))'"
     end
   end
 
