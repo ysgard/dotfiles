@@ -15,7 +15,7 @@ class Dot < Thor
                 nvim
                 emacs.d
                 emacs.dev
-		emacs.d.old
+                emacs.d.old
                 tmux.conf
                 zshrc
                 zshenv
@@ -49,6 +49,42 @@ class Dot < Thor
     run "curl -LSso ~#{@user}/.vim/colors/molokai.vim https://raw.githubusercontent.com/tomasr/molokai/master/colors/molokai.vim"
     inside("~#{@user}/.vim") do
       run "~#{@user}/.vim/update.sh"
+    end
+  end
+
+  desc "install_clozure", "Installs Clozure Common Lisp (CCL) and Quicklisp, putting it into ~/ccl and ~/quicklisp, and install slime-helper."
+  method_option :clean,
+                  :type => :boolean,
+                  :default => false,
+                  :desc => "Remove existing config"
+  def install_clozure
+    version = "1.11.5"
+    base_download_url = "https://github.com/Clozure/ccl/releases/download/v#{version}/ccl-#{version}"
+    ql_install = "(quicklisp-quickstart:install :path \"~#{@user}/quicklisp\")"
+    if options[:clean]
+      remove_file "~#{@user}/ccl"
+      remove_file "~#{@user}/quicklisp"
+      remove_file "~#{@user}/bin/ccl"
+    end
+    empty_directory "~#{@user}/bin"
+    # Install Clozure
+    if RUBY_PLATFORM.include?('darwin')
+      run "curl -L -o ~#{@user}/ccl.tar.gz #{base_download_url}-darwinx86.tar.gz"
+    else
+      run "curl -L -o ~#{@user}/ccl.tar.gz #{base_download_url}-linuxx86.tar.gz"
+    end
+    inside("~#{@user}") { run "tar zxvf ~#{@user}/ccl.tar.gz" }
+    if RUBY_PLATFORM.include?('darwin')
+    else
+      link_file("~#{@user}/ccl/lx86cl64", "~#{@user}/bin/ccl", :force)
+    end
+    remove_file "~#{@user}/ccl.tar.gz"
+    # Install Quicklisp
+    run "curl -L -o ~#{@user}/ccl/quicklisp.lisp https://beta.quicklisp.org/quicklisp.lisp"
+    inside("~#{@user}/ccl") do
+      run "~#{@user}/bin/ccl -l quicklisp.lisp -e '#{ql_install}'"
+      run "~#{@user}/bin/ccl -l quicklisp.lisp -e '(ql:add-to-init-file)'"
+      run "~#{@user}/bin/ccl -l quicklisp.lisp -e '(ql:quickload \"quicklisp-slime-helper\")'"
     end
   end
 
