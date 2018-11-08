@@ -273,6 +273,7 @@ class Dot < Thor
       f = file.split('/')[1..-1].join('/')
       copy_file("#{file}", "~#{@user}/.emacs.d/#{f}", options[:force])
     end
+    link_file("~#{@user}/.dotfiles/emacs.d/snippets", "~#{@user}/.emacs.d/snippets")
     empty_directory "~#{@user}/.emacs.d/thirdparty"
     run "git clone https://github.com/aurelienbottazini/tronesque ~#{@user}/.emacs.d/thirdparty/tronesque"
     link_file("~#{@user}/.emacs.d/thirdparty/tronesque/themes/tronesque-theme.el", "~#{@user}/.emacs.d/tronesque-theme.el")

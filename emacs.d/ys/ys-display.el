@@ -18,10 +18,15 @@
 
 ;; Load theme.  Good options are monokai-theme, molokai-theme and
 ;; cyberpunk-theme
+;; (use-package doom-themes
+;;   :config
+;;   (setq doom-themes-enable-bold t
+;;         doom-themes-enable-italic t)
+;;   (load-theme 'doom-one t))
+;; (load-theme 'tronesque t)
 (use-package cyberpunk-theme
   :config
   (load-theme 'cyberpunk t))
-;; (load-theme 'tronesque t)
 
 ;; Set font according to the host we are on
 (when (search "zen" (system-name))

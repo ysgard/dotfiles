@@ -31,6 +31,9 @@ if [[ -d $HOME/.cargo ]]; then
     source $HOME/.cargo/env
 fi
 
+# Rbenv
+export PATH=$HOME/.rbenv/bin:$PATH
+
 # Load local env file
 if [ -f ~/.zshenv-local ]; then
   source ~/.zshenv-local

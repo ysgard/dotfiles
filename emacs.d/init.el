@@ -73,6 +73,7 @@ You've got %s" (emacs-version))
 (require 'ys-lua)
 (require 'ys-terraform)
 (require 'ys-opengl)
+(require 'ys-snippet)
 
 (provide 'init)
 ;;; init.el ends here
