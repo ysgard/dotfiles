@@ -91,6 +91,44 @@ class Dot < Thor
     end
   end
 
+  desc "install_sbcl", "Installs Steel Bank Common Lisp (SBCL) and Quicklisp, putting it into ~/sbcl and ~/quicklisp, and installs slime-helper."
+  method_option :clean,
+                :type => :boolean,
+                :default => false,
+                :desc => "Remove existing config"
+  # TODO: Make sure this works, add Quicklisp config
+  def install_sbcl
+    ql_install = "(progn (quicklisp-quickstart:install :path \"~#{@user}/quicklisp\") (quit))"
+    if options[:clean]
+      remove_file "~#{@user}/sbcl"
+      remove_file "~#{@user}/quicklisp"
+    end 
+    if RUBY_PLATFORM.include?('darwin')
+      download_url = 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.2.11-x86-64-darwin-binary.tar.bz2'
+    elsif RUBY_PLATFORM.include?('x86_64-linux')
+      download_url = 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.4.13-x86-64-linux-binary.tar.bz2'
+    else
+      raise "I don't know how to install SBCL for #{RUBY_PLATFORM}"
+    end
+    run "curl -L -o ~#{@user}/sbcl.tar.bz2 #{download_url}"
+    inside("~#{@user}") do
+      empty_directory "~#{@user}/sbcl-install"
+      empty_directory "~#{@user}/sbcl"
+      run "tar jxvf sbcl.tar.bz2 -C sbcl-install --strip-components 1"
+      inside("~#{@user}/sbcl-install") { run "sudo sh install.sh" }
+    end
+    link_file("~#{@user}/sbcl/bin/sbcl", "/usr/local/bin/sbcl")
+    remove_file("~#{@user}/sbcl-install")
+    remove_file("~#{@user}/sbcl.tar.bz2")
+    # Install QuickLisp
+    run "curl -L -o ~#{@user}/bin/quicklisp.lisp https://beta.quicklisp.org/quicklisp.lisp"
+    inside("~#{@user}/bin") do
+      run "sbcl --load quicklisp.lisp"
+      run "sbcl --load ~#{@user}/quicklisp/setup.lisp -e \
+          '(progn (ql:quickload \"quicklisp-slime-helper\") (quit))'"
+    end
+  end
+
   desc "install_tmux", "Installs tmux config files into #{@user}'s home dir, and optionally plugin manager and plugins"
   method_option :force,
                  :type => :boolean,
