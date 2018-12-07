@@ -25,6 +25,9 @@
   :after (org)
   :bind (:map org-mode-map ("C-c M-l" . org-cliplink)))
 
+;; Write reveal presentations using org-mode
+(use-package ox-reveal)
+
 ;; Unbind alt-<arrow> keys to next-buffer and prev-buffer,
 ;; as they have special meaning in org and it interferes with 
 ;; the general navigation of buffers
