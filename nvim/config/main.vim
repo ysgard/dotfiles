@@ -24,6 +24,7 @@ set cino=                     " See :h cinoptions-values
 set commentstring=\ \ #%s     " When folds are created, add them to this
 set copyindent                " Make autoindent use the same chars as prev line
 " Store swapfiles in ~/tmp if it exists, otherwise ~/.vim/swapfiles
+set cpoptions+=J              " Two-spaces forever
 set directory=~/tmp,~/.vim/swapfiles
 set encoding=utf8             " UTF-8 by default
 set expandtab                 " No tabs
