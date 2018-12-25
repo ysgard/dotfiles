@@ -14,6 +14,11 @@ Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'mhartington/oceanic-next'
 
+Plug 'lilydjwg/colorizer'
+Plug 'luochen1990/rainbow'
+Plug 'RRethy/vim-illuminate'
+Plug 'inside/vim-search-pulse'
+
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " Load on-demand

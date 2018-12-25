@@ -88,3 +88,6 @@ highlight link ALEErrorSign Title
 " Molokai
 let g:molokai_original = 1
 let g:rehash256 = 1
+
+" Rainbow
+let g:rainbow_active = 1
