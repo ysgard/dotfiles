@@ -28,6 +28,10 @@
   :config
   (load-theme 'cyberpunk t))
 
+;; (use-package base16-theme
+;;  :config
+;;  (load-theme 'base16-default-dark t))
+
 ;; Set font according to the host we are on
 (when (search "zen" (system-name))
   (defvar ysgard-font-face "Menlo")
