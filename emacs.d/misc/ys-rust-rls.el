@@ -26,8 +26,9 @@
   :diminish cargo-minor-mode)
 
 ;; If the LSP module is enabled, set up RLS support
-(with-eval-after-load "ys-lsp"
+(with-eval-after-load 'lsp-mode
   (require 'ys-flycheck)
+  (setq lsp-rust-rls-command '("rustup" "run" "nightly" "rls"))
   (use-package lsp-rust
     :hook ((rust-mode . lsp-rust-enable)
            (rust-mode . flycheck-mode))))

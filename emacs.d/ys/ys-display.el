@@ -46,7 +46,7 @@
   (defvar ysgard-font-size "13"))
 
 (when (search "pinkiepie" (system-name))
-  (defvar ysgard-font-face "Inconsolata for Powerline")
+  (defvar ysgard-font-face "Anonymous Pro for Powerline")
   (defvar ysgard-font-size "12"))
 
 (when (search "shrine" (system-name))

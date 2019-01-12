@@ -91,3 +91,6 @@ let g:rehash256 = 1
 
 " Rainbow
 let g:rainbow_active = 1
+
+" Rust
+let g:autofmt_autosave = 1
