@@ -46,8 +46,8 @@
   (defvar ysgard-font-size "13"))
 
 (when (search "pinkiepie" (system-name))
-  (defvar ysgard-font-face "Anonymous Pro for Powerline")
-  (defvar ysgard-font-size "12"))
+  (defvar ysgard-font-face "Hurmit Nerd Font Medium")
+  (defvar ysgard-font-size "10"))
 
 (when (search "shrine" (system-name))
   (defvar ysgard-font-face "Source Code Pro Medium")
