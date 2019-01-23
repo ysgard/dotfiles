@@ -25,6 +25,11 @@
          ("C-c C-m" . cargo-process-clean))
   :diminish cargo-minor-mode)
 
+(use-package flycheck-rust
+  :config
+  (with-eval-after-load 'rust-mode
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
+
 ;; If the LSP module is enabled, set up RLS support
 (with-eval-after-load 'lsp-mode
   (require 'ys-flycheck)
