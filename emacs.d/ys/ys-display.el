@@ -24,13 +24,13 @@
 ;;         doom-themes-enable-italic t)
 ;;   (load-theme 'doom-one t))
 ;; (load-theme 'tronesque t)
-(use-package cyberpunk-theme
-  :config
-  (load-theme 'cyberpunk t))
+;; (use-package cyberpunk-theme
+;;   :config
+;;   (load-theme 'cyberpunk t))
 
-;; (use-package base16-theme
-;;  :config
-;;  (load-theme 'base16-default-dark t))
+(use-package base16-theme
+  :config
+  (load-theme 'base16-default-dark t))
 
 ;; Set font according to the host we are on
 (when (search "zen" (system-name))
@@ -58,7 +58,7 @@
   (defvar ysgard-font-size "12"))
 
 (when (search "jvanuytven-macbook-pro" (system-name))
-  (defvar ysgard-font-face "Inconsolata for Powerline")
+  (defvar ysgard-font-face "Roboto Mono for Powerline")
   (defvar ysgard-font-size "14"))
 
 ;; Turn on line numbers, column numbers, and highlight current line
