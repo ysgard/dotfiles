@@ -4,6 +4,8 @@
 
 ;;; Commentary:
 
+;; Also includes stuff for Scheme, namely Racket.
+
 ;;; Code:
 
 ;; Learn Paredit: http://pub.gajendra.net/src/paredit-refcard.pdf
@@ -66,6 +68,11 @@
   :after (slime company)
   :config
   (slime-setup '(slime-company)))
+
+;; Scheme stuff
+
+(use-package geiser)
+(use-package racket-mode)
 
 (provide 'ys-lisp)
 ;;; ys-lisp.el ends here
