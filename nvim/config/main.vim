@@ -21,6 +21,7 @@ set backspace=indent,eol,start
 set cindent                   " Automatic program indenting
 set cinkeys-=0#               " Comments don't fiddle with indenting
 set cino=                     " See :h cinoptions-values
+set clipboard=unnamed         " Use default system clipboard
 set commentstring=\ \ #%s     " When folds are created, add them to this
 set copyindent                " Make autoindent use the same chars as prev line
 " Store swapfiles in ~/tmp if it exists, otherwise ~/.vim/swapfiles
