@@ -8,6 +8,8 @@
 
 ;;; Code:
 
+(setq lisp-indent-function 'common-lisp-indent-function)
+
 ;; Learn Paredit: http://pub.gajendra.net/src/paredit-refcard.pdf
 (use-package paredit
   :commands paredit-mode
@@ -62,8 +64,18 @@
   :config
   (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (setq inferior-lisp-program (expand-file-name "~/bin/ccl"))
-  (setq slime-contribs '(slime-fancy)))
+  (setq slime-contribs '(slime-fancy))
+  (setq slime-net-coding-system 'utf-8-unix)
+  (slime-setup '(slime-repl
+                 slime-fuzzy
+                 slime-fancy-inspector
+                 slime-indentation))
+  (define-key slime-mode-map (kbd "TAB") 'slime-indent-and-complete-symbol))
 
+
+
+
+  
 (use-package slime-company
   :after (slime company)
   :config
