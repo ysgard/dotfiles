@@ -20,6 +20,8 @@ Plug 'RRethy/vim-illuminate'
 Plug 'inside/vim-search-pulse'
 
 Plug 'rust-lang/rust.vim'
+Plug 'b4b4r07/vim-hcl'
+Plug 'hashivim/vim-terraform'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
