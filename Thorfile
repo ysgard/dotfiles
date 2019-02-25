@@ -99,10 +99,10 @@ class Dot < Thor
                 desc: 'Remove existing config'
   # TODO: Make sure this works, add Quicklisp config
   def install_sbcl
-    ql_install = "(progn (quicklisp-quickstart:install :path \"~#{@user}/quicklisp\") (quit))"
     if options[:clean]
       remove_file "~#{@user}/sbcl"
       remove_file "~#{@user}/quicklisp"
+      remove_file "~#{@user}/.sbclrc"
     end
     if RUBY_PLATFORM.include?('darwin')
       download_url = 'http://prdownloads.sourceforge.net/sbcl/sbcl-1.2.11-x86-64-darwin-binary.tar.bz2'
@@ -124,9 +124,11 @@ class Dot < Thor
     run "curl -L -o ~#{@user}/bin/quicklisp.lisp " \
       'https://beta.quicklisp.org/quicklisp.lisp'
     inside("~#{@user}/bin") do
-      run 'sbcl --load quicklisp.lisp'
-      run "sbcl --load ~#{@user}/quicklisp/setup.lisp -e \
-          '(progn (ql:quickload \"quicklisp-slime-helper\") (quit))'"
+      run "sbcl --load quicklisp.lisp \
+                --eval '(quicklisp-quickstart:install)' \
+                --eval '(ql:add-to-init-file)' --quit"
+      run "sbcl --load ~#{@user}/quicklisp/setup.lisp --eval \
+                '(ql:quickload :quicklisp-slime-helper)' --quit"
     end
   end
 
