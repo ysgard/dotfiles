@@ -8,6 +8,13 @@
 
 ;;; Code:
 
+;; Make sure pkg-config can find libffi on OS X
+(if (eq system-type 'darwin)
+    (setenv "PKG_CONFIG_PATH"
+            (concat
+             "/usr/local/opt/libffi/lib/pkgconfig" ":"
+             (getenv "PKG_CONFIG_PATH"))))
+
 (setq lisp-indent-function 'common-lisp-indent-function)
 
 ;; Learn Paredit: http://pub.gajendra.net/src/paredit-refcard.pdf
