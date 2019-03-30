@@ -68,5 +68,11 @@
 (define-key evil-motion-state-map (kbd "SPC p") 'previous-buffer)
 (define-key evil-motion-state-map (kbd "SPC s") 'save-buffer)
 
+;; Use ys/yS, cs and ds in normal mode to change surroundings like parentheses
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
 (provide 'ys-evil)
 ;;; ys-evil.el ends here

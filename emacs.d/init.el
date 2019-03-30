@@ -49,7 +49,6 @@ You've got %s" (emacs-version))
 ;; Call in the misc modules - these are language or feature-specific
 ;; files that shouldn't depend on each other but might depend on
 ;; stuff in core.
-(add-to-list 'load-path "~/.emacs.d/misc")
 (require 'ys-company)
 (require 'ys-flycheck)
 (require 'ys-lsp)
@@ -76,5 +75,22 @@ You've got %s" (emacs-version))
 (require 'ys-opengl)
 (require 'ys-snippet)
 
+(require 'ys-keybinds)
+
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(hcl-indent-level 4)
+ '(package-selected-packages
+   (quote
+    (yasnippet-snippets yasnippet glsl-mode terraform-mode hcl-mode flymake-lua lua-mode ox-reveal org-cliplink org-bullets org-plus-contrib dired-icon dired-single ibuffer-projectile projectile inf-ruby rubocop flycheck-irony company-c-headers company-irony irony-eldoc yaml-mode emojify smart-mode-line rich-minority json-mode rainbow-mode web-mode tide ethan-wspace treemacs-evil treemacs flx-ido ido-vertical-mode smex ido-completing-read+ git-gutter-fringe gist magit racket-mode geiser slime-company use-package slime paredit paradox lsp-ui lsp-rust highlight-parentheses flycheck-rust flycheck-color-mode-line exec-path-from-shell evil-leader eros company-try-hard company-quickhelp company-lsp company-emoji cargo base16-theme))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

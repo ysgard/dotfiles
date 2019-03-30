@@ -5,8 +5,7 @@
 ;;; Code:
 
 (use-package magit
-  :commands magit-status
-  :bind ("C-l g" . magit-status))
+  :commands magit-status)
 
 ;; Create gitst easily with M-x gist-buffer or M-x gist-region
 (use-package gist)

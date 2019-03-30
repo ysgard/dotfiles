@@ -9,8 +9,7 @@
 
 (use-package treemacs
   :commands (treemacs)
-  :bind (("C-l x" . treemacs)
-         :map evil-motion-state-map
+  :bind (:map evil-motion-state-map
          ("SPC x" . treemacs))
   :hook (treemacs-mode . (lambda ()
                           (progn 

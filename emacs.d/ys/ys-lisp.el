@@ -47,7 +47,7 @@
                   (delete-file (concat buffer-file-name "c"))))))
 (add-hook 'emacs-lisp-mode-hook 'ys/remove-elc-on-save)
 
-;; 
+;;
 
 
 ;; eldoc-mode shows documentation in the minibuffer when writing code
@@ -69,7 +69,7 @@
 (use-package slime
   :config
   (load (expand-file-name "~/quicklisp/slime-helper.el"))
-  (setq inferior-lisp-program "sbcl"))
+  (setq inferior-lisp-program "sbcl")
   (setq slime-contribs '(slime-fancy))
   (setq slime-net-coding-system 'utf-8-unix)
   (slime-setup '(slime-repl
@@ -78,10 +78,6 @@
                  slime-indentation))
   (define-key slime-mode-map (kbd "TAB") 'slime-indent-and-complete-symbol))
 
-
-
-
-  
 (use-package slime-company
   :after (slime company)
   :config

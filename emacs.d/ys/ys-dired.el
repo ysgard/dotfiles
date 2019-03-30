@@ -11,7 +11,6 @@
 (setq auto-revert-verbose nil)
 
 (require 'dired)
-(global-set-key (kbd "C-l d") 'dired-jump)
 (define-key evil-motion-state-map (kbd "SPC d") 'dired-jump)
 ;; Reuse dired buffers and avoid unnecessary proliferation
 (use-package dired-single
