@@ -47,7 +47,8 @@
                   (haskell-interactive-mode . emacs)
                   (cider-repl-mode . emacs)
                   (treemacs-mode . emacs)
-                  (intero-repl-mode . emacs))
+                  (intero-repl-mode . emacs)
+                  (rustic-popup-mode . emacs))
       do (evil-set-initial-state mode state))
 
 ;; Define ',,' as ESC

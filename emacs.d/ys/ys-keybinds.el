@@ -48,7 +48,7 @@
 (global-set-key (kbd "C-l g") 'magit-status)
 (global-set-key (kbd "C-l d") 'dired-jump)
 (global-set-key (kbd "C-l x") 'treemacs)
-
+(global-set-key (kbd "C-l r") 'rustic-popup)
 ;; Terminals
 
 (bind-key "C-!" 'ys/eshell-here)
