@@ -111,6 +111,8 @@
 
 (setq sentence-end-double-space nil) ; The unwashed masses have spoken, no double spaces
 
+(setq custom-safe-themes t) ; All themes are safe
+
 
 ;;; DISPLAY
 ;;;
