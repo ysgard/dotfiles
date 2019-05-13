@@ -176,6 +176,47 @@
         (rustic-popup-mode . emacs))
       do (evil-set-initial-state mode state))
 
+;;; IDO
+;;;
+;;; Ido forever!
+
+
+
+;;; COMPANY
+;;;
+;;; Try to use Company for all autocomplete
+
+(use-package company
+  :demand t
+  :commands company-mode
+  :config
+  (global-company-mode)
+  (setq company-global-modes '(not term-mode)) ; no company in terminals
+  (setq company-transformers '(company-sort-by-occurence)) ; in-buffer symbols appear first
+  ;; Company default colors look pretty bad in dark mode, use something nicer
+  (set-face-foreground 'company-tooltip "#000")
+  (set-face-background 'company-tooltip "#ddd")
+  (set-face-background 'company-scrollbar-bg "#fff")
+  (set-face-background 'company-scrollbar-fg "#999")
+  (set-face-background 'company-tooltip-selection "#aaa")
+  (set-face-foreground 'company-tooltip-common "#9a0000")
+  (set-face-foreground 'company-tooltop-common-selection "#9a0000")
+  (set-face-foreground 'company-tooltop-annotation "#00008e")
+  :diminish company-mode)
+
+(use-package company-quickhelp
+  :after (company)
+  :config
+  (setq company-quickhelp-delay 1)
+  (company-quickhelp-mode t))
+
+(use-package company-emoji
+  :after (company)
+  :config
+  (company-emoji-init))
+
+
+
 ;;; KEYBINDS
 ;;;
 ;;; Custom keybinds
