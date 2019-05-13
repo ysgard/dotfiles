@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: dot
+# key: <dot
+# --
+#+BEGIN_SRC dot :file ${1:dot_image}.png :cmdline -Kdot -Tpng
+#+END_SRC
