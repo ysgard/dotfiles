@@ -6,6 +6,22 @@
 
 ;;; This one is mine.
 
+;;; Sections:
+;;; PRELUDE
+;;; PACKAGE
+;;; DISPLAY
+;;; EVIL
+;;; IDO
+;;; COMPANY
+;;; FLYCHECK
+;;; MAGIT
+;;; ORG
+;;; LSP
+;;; LANGUAGES
+;;; MISC
+;;; KEYBINDS
+
+
 ;;; Code:
 
 ;;; PRELUDE
@@ -29,6 +45,7 @@
 
 (add-to-list 'load-path (concat init-dir "/ys"))
 (require 'ys-lib)
+
 
 ;;; PACKAGE
 ;;;
@@ -79,10 +96,16 @@
 (global-auto-revert-mode t) ; make sure buffers match file contents file changes
 
 (setq-default tab-width 4
-	      indent-tabs-mode nil) ; spaces instead of tabs
+	          indent-tabs-mode nil) ; spaces instead of tabs
+
+;; Indent after newlines
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
 (setq inhibit-startup-message t) ; suppress startup message
 (setq-default frame-title-format "%b (%f)") ; show filename in frame
+
+(setq sentence-end-double-space nil) ; The unwashed masses have spoken, no double spaces
+
 
 ;;; DISPLAY
 ;;;
@@ -101,9 +124,9 @@
 (global-linum-mode t)
 (setq column-number-mode t)
 
-(tool-bar-mode t) ; disables tool bar
-(scroll-bar-mode t) ; disables scroll bar
-(unless (display-graphic-p) (menu-bar-mode t)) ; turn off menu in terminal
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1)) ; disables tool bar
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1)) ; disables scroll bar
+(unless (display-graphic-p) (menu-bar-mode -1)) ; turn off menu in terminal
 
 (setq x-underline-at-descent-line t)
 (setq use-dialog-box nil) ; We use keys for everything, no mouse if possible
@@ -179,8 +202,50 @@
 ;;; IDO
 ;;;
 ;;; Ido forever!
+(ido-mode t)
+(setq ido-enable-prefix nil ; finds matches that aren't prefixes
+      ido-enable-flex-matching t ; match characters if can't match substring
+      ido-create-new-buffer 'always
+      ido-use-filename-at-point 'guess
+      ido-use-url-at-point t
+      ido-max-prospects 10
+      ido-use-virtual-buffers t)
 
+;; Ido everywhere!
+(use-package ido-completing-read+
+  :config (ido-ubiquitous-mode t))
 
+;; Smex provides an ido-like interface to M-x
+(use-package smex
+  :config (smex-initialize)
+  :bind (("M-x" . smex)
+         ("M-X" . smex-major-mode-commands)
+         ;; Old M-x
+         ("C-c C-c M-x" . execute-extended-command)))
+
+(use-package ido-vertical-mode
+  :config (ido-vertical-mode))
+
+;; Improved fuzzy-finding with flx
+(use-package flx-ido
+  :config
+  (flx-ido-mode t)
+  (setq ido-enable-flex-matching t
+        ido-use-faces nil
+        gc-cons-threshold 20000000))
+
+;; Bind '~' to go to homedir when in ido-find-file
+;; From http://whattheemacsd.com/setup-ido.el-02.html
+(add-hook 'ido-setup-hook
+          (lambda ()
+            ;; Go straight home
+            (define-key ido-file-completion-map
+              (kbd "~")
+              (lambda ()
+                (interactive)
+                (if (looking-back "/")
+                    (insert "~/")
+                  (call-interactively 'self-insert-command))))))
 
 ;;; COMPANY
 ;;;
@@ -200,8 +265,8 @@
   (set-face-background 'company-scrollbar-fg "#999")
   (set-face-background 'company-tooltip-selection "#aaa")
   (set-face-foreground 'company-tooltip-common "#9a0000")
-  (set-face-foreground 'company-tooltop-common-selection "#9a0000")
-  (set-face-foreground 'company-tooltop-annotation "#00008e")
+  (set-face-foreground 'company-tooltip-common-selection "#9a0000")
+  (set-face-foreground 'company-tooltip-annotation "#00008e")
   :diminish company-mode)
 
 (use-package company-quickhelp
@@ -214,6 +279,64 @@
   :after (company)
   :config
   (company-emoji-init))
+
+
+;;; FLYCHECK
+;;;
+;;; Spot errors on the fly
+
+(use-package flycheck
+  :config
+  ;; Don't enable flycheck for elisp, it's dumb
+  :hook (find-file-hook . (lambda () (when (not (equal 'emacs-lisp-mode major-mode))
+                                         (flycheck-mode)))))
+
+;; Turn the modeline red when flycheck spots errors
+(use-package flycheck-color-mode-line
+  :after (flycheck)
+  :config (setq flycheck-highlighting-mode 'symbols)
+  :hook (flycheck-mode-hook . flycheck-color-mode-line))
+
+(with-eval-after-load "flycheck"
+  (set-face-background 'flycheck-error "#660000")
+  (set-face-foreground 'flycheck-error nil)
+  (set-face-background 'flycheck-warning "#331800")
+  (set-face-foreground 'flycheck-warning nil)
+  (require 'flycheck-color-mode-line)
+  (set-face-background 'flycheck-color-mode-line-error-face "#440000")
+  (set-face-background 'flycheck-color-mode-line-warning-face "#553300")
+  (set-face-background 'flycheck-color-mode-line-info-face nil)
+  (set-face-foreground 'flycheck-color-mode-line-error-face "#ffffff")
+  (set-face-foreground 'flycheck-color-mode-line-warning-face "#ffffff")
+  (set-face-foreground 'flycheck-color-mode-line-info-face nil))
+        
+  
+;;; MAGIT
+;;;
+;;; Superior git-mode
+
+
+
+
+;;; ORG
+
+
+
+
+;;; LSP
+
+
+
+;;; LANGUAGES
+
+
+
+
+;;; MISC
+
+
+                                                  
+
 
 
 
@@ -230,7 +353,7 @@
 (define-key evil-motion-state-map (kbd "SPC n") 'ys/next-user-buffer)
 (define-key evil-motion-state-map (kbd "SPC p") 'ys/previous-user-buffer)
 (define-key evil-motion-state-map (kbd "SPC s") 'save-buffer)
-(define-key evil-motion-state-map (kbd "SPC f") 'find-file)
+(define-key evil-motion-state-map (kbd "SPC f") 'ido-find-file)
 (define-key evil-motion-state-map (kbd "SPC `") 'ys/eshell-here)
 (define-key evil-motion-state-map (kbd "SPC x x") 'ys/exec)
 ;;; init.el ends here
