@@ -10,9 +10,7 @@
 
 ;; Base support
 ;; (use-package rust-mode)
-(use-package rustic
-  :config
-  (setq rustic-lsp-server 'rust-analyzer))
+(use-package rustic)
 
 (provide 'ys-rust-rustic)
 ;;; ys-rust-rustic.el ends here

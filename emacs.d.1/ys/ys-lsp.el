@@ -6,16 +6,11 @@
 
 ;; Basic LSP support
 ;; Language modules will add their own lsp setup if this is available
-(use-package lsp-mode)
-
-(with-eval-after-load "company"
-  (use-package company-lsp
-    :after lsp-mode
-    :config
-    (push 'company-lsp company-backends)))
+(use-package lsp-mode
+  :commands lsp)
 
 (use-package lsp-ui
-  :after lsp-mode
+  :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode)
   :bind (:map lsp-ui-mode-map
               ("M-." . lsp-ui-peek-find-definitions)

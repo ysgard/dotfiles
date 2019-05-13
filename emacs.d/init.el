@@ -1,95 +1,207 @@
 ;;;; ~/.emacs.d/init.el --- Summary
 
-;;; All emacs initialization is controlled through here.
-;;; Functionality is broken out into subfiles
+;;; Ysgard's Emacs.d init.el
 
 ;;; Commentary:
 
+;;; This one is mine.
+
 ;;; Code:
 
-;; Bail if we're not using a current version of emacs
+;;; PRELUDE
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
 (require 'cl-lib)
 
-(when (or (< emacs-major-version 24)
-          (and (= emacs-major-version 24) (< emacs-minor-version 4)))
-  (x-popup-dialog
-   t `(,(format "Sorry, you need GNU Emacs version 24.4 or higher 
-to use these dotfiles.
+;; Bail if we're not running a modern version of Emacs
 
-You've got %s" (emacs-version))
-       ("OK :(" . t)))
+(when (< emacs-major-version 26)
+  (x-popup-dialog
+   t `(,(format "Version 26 of Emacs required! You have version %s" (emacs-version))
+       ("OK" . t)))
   (save-buffers-kill-emacs t))
 
-;; Base system variables
+;; Set some base information
+
 (setq user-full-name "Jan Van Uytven")
 (setq user-mail-address "ysgard@gmail.com")
-(setq hostname (replace-regexp-in-string "\\(^[[:space:]\n]*\\|[[:space:]\n]*$\\)" ""
-                                         (with-output-to-string
-                                           (call-process "hostname" nil standard-output))))
-(setq dotfiles-dir (file-name-directory
-                    (or (buffer-file-name) (file-chase-links load-file-name))))
+(setq init-dir (file-name-directory
+		(or (buffer-file-name) (file-chase-links load-file-name))))
 
-;; Call in the core - these files define the basic emacs experience
-;; and sets up infrastructure for the misc modules to take advantage
-;; of, in particular the package loading.
-(add-to-list 'load-path "~/.emacs.d/thirdparty")
-(add-to-list 'load-path "~/.emacs.d/ys")
-(require 'ys-package)
+(add-to-list 'load-path (concat init-dir "/ys"))
 (require 'ys-lib)
-(require 'ys-base)
-(require 'ys-display)
-(require 'ys-evil)
 
-;; Call in the misc modules - these are language or feature-specific
-;; files that shouldn't depend on each other but might depend on
-;; stuff in core.
-(require 'ys-company)
-(require 'ys-flycheck)
-(require 'ys-lsp)
-;; (require 'ys-rust-racer)
-;; (require 'ys-rust-rls)
-(require 'ys-rust-rustic)
-(require 'ys-lisp)
-(require 'ys-magit)
-(require 'ys-ido)
-;; (require 'ys-narrows)
-(require 'ys-treemacs)
-(require 'ys-codestyle)
-(require 'ys-javascript)
-(require 'ys-markdown)
-(require 'ys-smart-mode-line)
-(require 'ys-emojify)
-(require 'ys-yaml)
-(require 'ys-c)
-(require 'ys-ruby)
-(require 'ys-project)
-(require 'ys-dired)
-(require 'ys-org)
-(require 'ys-lua)
-(require 'ys-terraform)
-(require 'ys-zig)
-(require 'ys-opengl)
-(require 'ys-snippet)
+;;; PACKAGE
+;;;
+;;; Set up the package manager (we use use-package)
 
-(require 'ys-keybinds)
+(setq package-user-dir (concat init-dir "elpa"))
 
-(provide 'init)
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(setq package-enable-at-startup nil)
+(package-initialize)
+
+;; If we're online, fetch package directories and refresh them
+(when (ys-online?) (package-refresh-contents))
+
+;; Install use-package, we use it to install everything else
+(when (not (package-installed-p 'use-package))
+  (package-install 'use-package))
+(require 'use-package)
+;; Auto-install declared packages
+(setq use-package-always-ensure t)
+
+
+;;; BASE CONFIGURATION
+;;;
+;;; Configure base Emacs
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+(delete-selection-mode t) ;typed text replaces selection
+(transient-mark-mode t)   ;highlight marked regions
+
+;; UTF-8 for everything
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+(prefer-coding-system 'utf-8)
+(load-library "iso-transl")
+(require 'iso-transl)
+
+;; Turn off backups and deal with temp files
+(setq make-backup-files nil)
+(setq backup-directory-alist `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+
+(setq apropos-do-all t) ; apropos searches all
+(global-auto-revert-mode t) ; make sure buffers match file contents file changes
+
+(setq-default tab-width 4
+	      indent-tabs-mode nil) ; spaces instead of tabs
+
+(setq inhibit-startup-message t) ; suppress startup message
+(setq-default frame-title-format "%b (%f)") ; show filename in frame
+
+;;; DISPLAY
+;;;
+;;; Make Emacs look purdy
+
+(use-package base16-theme
+  :config
+  (load-theme 'base16-default-dark t))
+
+(when (search "pinkiepie" (system-name))
+  (defvar ysgard-font-face "Hurmit Nerd Font Medium")
+  (defvar ysgard-font-size "10"))
+
+;; Turn on line numbers, column numbers, and highlight current line
+(autoload 'linum-mode "linum" "toggle line numbers on/off" t)
+(global-linum-mode t)
+(setq column-number-mode t)
+
+(tool-bar-mode t) ; disables tool bar
+(scroll-bar-mode t) ; disables scroll bar
+(unless (display-graphic-p) (menu-bar-mode t)) ; turn off menu in terminal
+
+(setq x-underline-at-descent-line t)
+(setq use-dialog-box nil) ; We use keys for everything, no mouse if possible
+
+(show-paren-mode t) ; Highlight matching parens
+
+;; Flash mode line when we 'ring the bell'
+(setq ring-bell-function
+      (lambda ()
+        (unless (memq this-command
+                      '(isearch-abort abort-recursive-edit
+                                      exit-minibuffer keyboard-quit))
+          (invert-face 'mode-line)
+          (run-with-timer 0.1 nil 'invert-face 'mode-line))))
+
+;; We want smooth scrolling
+(setq mouse-wheel-scroll-amount '(5 ((shift) . 1))) ; 5 lines at a time
+(setq mouse-wheel-progressive-speed nil) ; Don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ; Scroll window under mouse
+(setq scroll-step 5) ; keyboard scroll one line at a time
+
+;; Set the font, if we've defined it
+(if (boundp 'ysgard-font-face)
+    (progn
+      (defvar ysgard-font (concat ysgard-font-face " " ysgard-font-size))
+      (add-to-list 'default-frame-alist (cons 'font ysgard-font))))
+
+(add-to-list 'initial-frame-alist '(width . 100)) ; Set default frame width
+
+
+;;; EVIL
+;;;
+;;; Configure Evil-mode
+(use-package evil)
+(use-package evil-leader)
+(require 'evil)
+(require 'evil-leader)
+(global-evil-leader-mode)
+
+;; Set comma to be leader
+(evil-leader/set-leader ",")
+(setq evil-leader/in-all-states t)
+(evil-mode t)
+
+;; Set cursor colors so we know what mode we're in
+(setq evil-emacs-state-cursor '("red" box)
+      evil-normal-state-cursor '("green" box)
+      evil-visual-state-cursor '("orange" box)
+      evil-insert-state-cursor '("red" bar)
+      evil-replace-state-cursor '("red" bar)
+      evil-operator-state-cursor '("red" hollow))
+
+;; Define initial states for certain modes
+;; Some modes, like Dired and the shell, deal poorly with evil
+(loop for (mode . state) in
+      '((inferior-emacs-lisp-mode . emacs)
+        (nrepl-mode . insert)
+        (comint-mode . normal)
+        (shell-mode . emacs)
+        (git-commit-mode . insert)
+        (term-mode . emacs)
+        (help-mode . emacs)
+        (grep-mode . emacs)
+        (bc-menu-mode . emacs)
+        (magit-branch-manager-mode . emacs)
+        (dired-mode . normal)
+        (ibuffer-mode . normal)
+        (wdired-mode . normal)
+        (treemacs-mode . emacs)
+        (rustic-popup-mode . emacs))
+      do (evil-set-initial-state mode state))
+
+;;; KEYBINDS
+;;;
+;;; Custom keybinds
+
+;; Unset space in evil normal mode so we can use it as a prefix
+(define-key evil-motion-state-map " " nil)
+
+(define-key evil-motion-state-map (kbd "SPC b") 'ibuffer)
+(define-key evil-motion-state-map (kbd "SPC o") 'other-window)
+(define-key evil-motion-state-map (kbd "SPC k") 'kill-this-buffer)
+(define-key evil-motion-state-map (kbd "SPC n") 'ys/next-user-buffer)
+(define-key evil-motion-state-map (kbd "SPC p") 'ys/previous-user-buffer)
+(define-key evil-motion-state-map (kbd "SPC s") 'save-buffer)
+(define-key evil-motion-state-map (kbd "SPC f") 'find-file)
+(define-key evil-motion-state-map (kbd "SPC `") 'ys/eshell-here)
+(define-key evil-motion-state-map (kbd "SPC x x") 'ys/exec)
 ;;; init.el ends here
+  
+		      
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(hcl-indent-level 4)
- '(package-selected-packages
-   (quote
-    (yasnippet-snippets yasnippet glsl-mode terraform-mode hcl-mode flymake-lua lua-mode ox-reveal org-cliplink org-bullets org-plus-contrib dired-icon dired-single ibuffer-projectile projectile inf-ruby rubocop flycheck-irony company-c-headers company-irony irony-eldoc yaml-mode emojify smart-mode-line rich-minority json-mode rainbow-mode web-mode tide ethan-wspace treemacs-evil treemacs flx-ido ido-vertical-mode smex ido-completing-read+ git-gutter-fringe gist magit racket-mode geiser slime-company use-package slime paredit paradox lsp-ui lsp-rust highlight-parentheses flycheck-rust flycheck-color-mode-line exec-path-from-shell evil-leader eros company-try-hard company-quickhelp company-lsp company-emoji cargo base16-theme))))
+ '(package-selected-packages (quote (base16-theme use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

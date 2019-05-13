@@ -13,7 +13,16 @@
 ;;   windows-nt    - Win32
 
 ;;; Code:
-(require 'cl)
+
+(require 'ys-package)
+
+;; New standard library
+;; f.el    - files and paths  https://github.com/rejeep/f.el
+;; s.el    - strings          https://github.com/magnars/s.el
+;; dash.el - lists            https://github.com/magnars/dash.el
+(use-package f)
+(use-package s)
+(use-package dash)
 
 (defmacro ys/with-system (type &rest body)
   "Evaluate BODY if `system-type' equals TYPE."
@@ -159,16 +168,6 @@ directory to make multiple eshell windows easier."
   (interactive)
   (let ((inhibit-read-only t))
     (ansi-color-apply-on-region (point-min) (point-max))))
-
-(defun ys-online? ()
-  "Returns (up) if we have a network connection, nil otherwise"
-  (if (and (functionp 'network-interface-list)
-	   (network-interface-list))
-      (some (lambda (iface) (unless (equal "lo" (car iface))
-			      (member 'up (first (last (network-interface-info
-							(car iface)))))))
-	    (network-interface-list))
-    t))
 
 (provide 'ys-lib)
 ;;; ys-lib.el ends here
