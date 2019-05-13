@@ -14,6 +14,7 @@
 ;;; IDO
 ;;; COMPANY
 ;;; FLYCHECK
+;;; DIRED
 ;;; MAGIT
 ;;; ORG
 ;;; LSP
@@ -93,7 +94,11 @@
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 
 (setq apropos-do-all t) ; apropos searches all
-(global-auto-revert-mode t) ; make sure buffers match file contents file changes
+
+;; make sure buffers match file contents file changes
+(global-auto-revert-mode t)
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 
 (setq-default tab-width 4
 	          indent-tabs-mode nil) ; spaces instead of tabs
@@ -309,36 +314,163 @@
   (set-face-foreground 'flycheck-color-mode-line-error-face "#ffffff")
   (set-face-foreground 'flycheck-color-mode-line-warning-face "#ffffff")
   (set-face-foreground 'flycheck-color-mode-line-info-face nil))
-        
+
+
+;;; DIRED
+;;;
+;;; Built-in File Manager options
+
+(require 'dired)
+;; Reuse dired buffers and avoid unnecessary proliferation
+(use-package dired-single
+  :config
+  (define-key dired-mode-map (kbd "RET") 'dired-single-buffer))
+
+(use-package dired-icon
+  :hook ((dired-mode . dired-icon-mode)))
+
+
   
 ;;; MAGIT
 ;;;
 ;;; Superior git-mode
+(use-package magit
+  :commands magit-status)
 
+(use-package gist)
 
+;; Mark uncommitted changes in the fringe
+(use-package git-gutter-fringe
+  :config (global-git-gutter-mode t)
+  :diminish git-gutter-mode)
 
 
 ;;; ORG
+;;;
+;;; Ultimate note-taking
 
+(use-package org
+  :ensure org-plus-contrib
+  :config
+  ;; Stop org-mode from hijacking shift-cursor key
+  (setq org-replace-disputed-keys t)
+  (setq org-hide-emphasis-markers t) ; hide emphasis markers
+  (org-babel-do-load-languages
+   'org-babel-load-languages '((dot . t))) ; allow embedded graphviz code
+  :hook (org-mode . (lambda () (org-indent-mode t))))
 
+(use-package org-bullets
+  :after (org)
+  :hook (org-mode . (lambda () (org-bullets-mode 1))))
+
+;; Write reveal presentations using org-mode
+(use-package ox-reveal)
 
 
 ;;; LSP
+;;;
+;;; Language server protocol, general options
 
+(use-package lsp-mode
+  :commands lsp)
+
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :hook (lsp-mode . lisp-ui-mode)
+  :bind (:map lsp-ui-mode-map
+              ("M-." . lsp-ui-peek-find-definitions)
+              ("M-?" . lsp-ui-peek-find-references)))
 
 
 ;;; LANGUAGES
+;;;
+;;; Options for specific languages
 
+;; C, C++, Objective-C
+;;
+
+;; Python
+
+;; Ruby
+(use-package enh-ruby-mode
+  :config
+  (add-to-list 'auto-mode-alist
+               '("\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\)file\\)\\'" . enh-ruby-mode)))
+
+(use-package rspec-mode)
+
+(use-package rubocop
+  :hook (ruby-mode . rubocop-mode)
+  :diminish rubocop-mode)
+
+(use-package inf-ruby
+  :hook (ruby-mode . inf-ruby-minor-mode))
+
+;; Rust
+(use-package rustic)
+
+;; Terraform
+(use-package hcl-mode
+  :config (custom-set-variables '(hcl-indent-level 2))
+  :mode "\\.hcl\\'")
+
+(use-package terraform-mode
+  :config (custom-set-variables '(terraform-indent-level 2))
+  :mode "\\.tf\\'")
+
+;; YAML
+(use-package yaml-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+  (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode)))
+
+;; Zig
+(use-package zig-mode
+  :mode "\\.zig\\'")
 
 
 
 ;;; MISC
+;;;
+;;; Miscellaneous tweaks and extensions go here
 
+;; Treemacs
+(use-package treemacs
+  :commands (treemacs)
+  ;; Rebind k/j and / to match vim, because the buffer reacts poorly with evil in general
+  :hook (treemacs-mode . (lambda ()
+                           (progn 
+                             (local-set-key (kbd "k") #'treemacs-previous-line)
+                             (local-set-key (kbd "j") #'treemacs-next-line)
+                             (local-set-key (kbd "/") #'isearch-forward-regexp)))))
 
-                                                  
+;; Snippets
+(use-package yasnippet
+  :config
+  (setq yas-snippet-dirs
+        (append yas-snippet-dirs (concat init-dir "snippets"))) ; personal snippet dir
+  (yas-global-mode t))
+(use-package yasnippet-snippets)
+        
+;; Cleaner mode line
+(use-package rich-minority
+  :commands rich-minority-mode
+  :demand t
+  :init
+  (setq rm-blacklist '(" Helm" " Guide" " $" " ," " Tern" " Ind" " alchemist" " Monroe" " clrj" " Wrap" " Doc"))
+  :config
+  (rich-minority-mode t))
 
-
-
+(use-package smart-mode-line
+  :commands sml/setup
+  :demand t
+  :init
+  (setq sml/theme 'respectful
+        sml/shorten-directory t
+        sml/name-width 40
+        sml/mode-width 'full)
+  :config
+  (sml/setup))
 
 ;;; KEYBINDS
 ;;;
@@ -355,7 +487,17 @@
 (define-key evil-motion-state-map (kbd "SPC s") 'save-buffer)
 (define-key evil-motion-state-map (kbd "SPC f") 'ido-find-file)
 (define-key evil-motion-state-map (kbd "SPC `") 'ys/eshell-here)
-(define-key evil-motion-state-map (kbd "SPC x x") 'ys/exec)
+(define-key evil-motion-state-map (kbd "SPC m") 'magit-status)
+(define-key evil-motion-state-map (kbd "SPC d") 'dired-jump)
+(define-key evil-motion-state-map (kbd "SPC x") 'treemacs)
+(define-key evil-motion-state-map (kbd "SPC c r") 'rustic-popup)
+
+
+(global-set-key (kbd "C-x C-r") 'ys/rename-current-buffer-file)
+
+
+
+
 ;;; init.el ends here
   
 		      
@@ -365,7 +507,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (base16-theme use-package))))
+ '(custom-safe-themes
+   (quote
+    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" default)))
+ '(hcl-indent-level 2)
+ '(package-selected-packages (quote (base16-theme use-package)))
+ '(tramp-syntax (quote default) nil (tramp)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
