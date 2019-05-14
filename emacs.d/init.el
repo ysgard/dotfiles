@@ -113,6 +113,12 @@
 
 (setq custom-safe-themes t) ; All themes are safe
 
+;; Make sure our $PATH matches the system's
+(use-package exec-path-from-shell)
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
+
 
 ;;; DISPLAY
 ;;;
@@ -162,6 +168,10 @@
       (add-to-list 'default-frame-alist (cons 'font ysgard-font))))
 
 (add-to-list 'initial-frame-alist '(width . 100)) ; Set default frame width
+
+;; Interpret color codes in shells
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
 
 ;;; EVIL
@@ -264,7 +274,6 @@
   :config
   (global-company-mode)
   (setq company-global-modes '(not term-mode)) ; no company in terminals
-  (setq company-transformers '(company-sort-by-occurence)) ; in-buffer symbols appear first
   ;; Company default colors look pretty bad in dark mode, use something nicer
   (set-face-foreground 'company-tooltip "#000")
   (set-face-background 'company-tooltip "#ddd")
@@ -378,10 +387,9 @@
 
 (use-package lsp-ui
   :commands lsp-ui-mode
-  :hook (lsp-mode . lisp-ui-mode)
-  :bind (:map lsp-ui-mode-map
-              ("M-." . lsp-ui-peek-find-definitions)
-              ("M-?" . lsp-ui-peek-find-references)))
+  :hook (lsp-mode-hook . lsp-ui-mode))
+(use-package company-lsp
+  :commands company-lsp)
 
 
 ;;; LANGUAGES
@@ -390,6 +398,11 @@
 
 ;; C, C++, Objective-C
 ;;
+
+(require 'lsp-mode)
+(require 'lsp-ui)
+(require 'company-lsp)
+(push 'company-lsp company-backends)
 
 ;; Python
 
@@ -409,7 +422,10 @@
   :hook (ruby-mode . inf-ruby-minor-mode))
 
 ;; Rust
-(use-package rustic)
+(add-hook 'rust-mode-hook #'lsp)
+(use-package rustic
+  :config
+  (setq rustic-lsp-server 'rust-analyzer))
 
 ;; Terraform
 (use-package hcl-mode
