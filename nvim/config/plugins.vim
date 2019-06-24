@@ -25,6 +25,8 @@ Plug 'hashivim/vim-terraform'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
+Plug 'fatih/vim-go'
+
 " Load on-demand
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 

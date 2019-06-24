@@ -6,7 +6,9 @@
 augroup vimrc
 autocmd!
 
-au BufNewFile,BufRead *.c       set expandtab tabstop=4 shiftwidth=4 softtabstop=4
+
+
+au BufNewFile,BufRead *.h,*.c   set expandtab tabstop=4 shiftwidth=4 softtabstop=4 filetype=c.doxygen
 au BufNewFile,BufRead *.cson    set ft=coffee
 au BufNewFile,BufRead *.glsl    set glsl
 au BufNewFile,BufRead *.html    setlocal nocindent smartindent
@@ -24,8 +26,8 @@ au BufNewFile,BufRead *.rs      setlocal hidden
 au BufNewFile,BufRead *.rxml    setf ruby
 au BufNewFile,BufRead *.sass    setf sass
 au BufNewFile,BufRead *.ttml    setf xml
-au BufNewFile,BufRead *.tf      setlocal ft=hcl ts=4 sw=4
-au BufNewFile,BufRead *.txt     setlocal nocindent nosmartindent spell noautoindent tw=78 lbr nolist fo=aw2tq
+au BufNewFile,BufRead *.tf      setlocal ft=hcl ts=2 sw=2
+au BufNewFile,BufRead *.txt     setlocal nocindent nosmartindent spell noautoindent tw=78 lbr nolist fo=aw2tq colorcolumn=80 textwidth=80
 au BufNewFile,BufRead *.vert,*.frag set ft=glsl
 au BufNewFile,BufRead *.zsh     setf zsh
 au BufNewFile,BufRead *templates/*.html setf htmldjango
@@ -42,4 +44,3 @@ au FileType make setlocal nolist ts=4 sts=4 sw=4 noet
 au FileType markdown syn sync fromstart
 
 augroup END
-

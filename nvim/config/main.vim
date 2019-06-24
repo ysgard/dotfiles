@@ -22,6 +22,8 @@ set cindent                   " Automatic program indenting
 set cinkeys-=0#               " Comments don't fiddle with indenting
 set cino=                     " See :h cinoptions-values
 set clipboard=unnamed         " Use default system clipboard
+set colorcolumn=110           " Show when we're about to run off the edge
+highlight ColorColumn ctermbg=darkgray 
 set commentstring=\ \ #%s     " When folds are created, add them to this
 set copyindent                " Make autoindent use the same chars as prev line
 " Store swapfiles in ~/tmp if it exists, otherwise ~/.vim/swapfiles
@@ -29,6 +31,7 @@ set cpoptions+=J              " Two-spaces forever
 set directory=~/tmp,~/.vim/swapfiles
 set encoding=utf8             " UTF-8 by default
 set expandtab                 " No tabs
+set exrc                      " Source .exrc/.nvimrc automatically when in current directory
 set fileformats=unix,dos,mac  " Prefer unix
 set fillchars=vert:\ ,stl:\ ,stlnc:\ ,fold:-,diff:┄
                               " Unicode chars for diffs/folds, and rely on
@@ -61,6 +64,7 @@ set printoptions=paper:letter " US paper
 set ruler                     " Show row/col and percentage
 set scroll=4                  " Number of lines to scroll with ^U/^D
 set scrolloff=15              " Keep cursor away from this many chars top/bottom
+set secure                    " Because we set `set exrc` - we don't want trojan horses
 set sessionoptions-=options   " Don't save runtimepath in Vim session (see tpope/vim-pathogen docs)
 set noshiftround              " Don't round autoindent to nearest shiftwidth units
 set shiftwidth=2              " Number of spaces to shift for autoindent of >,<
@@ -72,13 +76,17 @@ set smartcase                 " Lets you search for ALL CAPS
 set softtabstop=2             " Spaces 'feel' like tabs
 set suffixes+=.pyc            " Ignore these files when tab-completing
 set tabstop=2                 " The one true tab, according to some
-set textwidth=80              " 100 is the new 80? Haha no
+set textwidth=110             " 110 is the new 80? Haha no^H^Hyes
 set thesaurus+=~/.vim/mthes10/mthesaur.txt
 set title                     " set the title of the vim window
 set wildmenu                  " Show possible completions on command line
 set wildmode=list:longest,full  " List all options and complete
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules
                               " Ignore certain files in tab-completion
+
+" netrw
+let g:netrw_banner = 0
+
 
 " ALE 
 let g:ale_sign_warning = '▲'

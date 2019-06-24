@@ -7,7 +7,7 @@ let mapleader = ','
 :inoremap jj <Esc>
 
 " Nerdtree
-nmap <Leader>x :NERDTreeToggle<CR>
+nmap <Leader>x :Explore<CR>
 
 " Buffer navigation
 nmap <Leader>n :bnext<CR>
