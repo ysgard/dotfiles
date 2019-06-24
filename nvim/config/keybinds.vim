@@ -6,7 +6,6 @@
 let mapleader = ','
 :inoremap jj <Esc>
 
-" Nerdtree
 nmap <Leader>x :Explore<CR>
 
 " Buffer navigation
@@ -29,4 +28,9 @@ nmap <Leader>f :FZF<CR>
 
 " Toggle line numbers
 nmap <Leader>l :set invnumber<CR>
+
+" Window management
+nmap <Leader>o <C-w>w 
+nmap <Leader>v <C-w>v
+nmap <Leader>s <C-w>s
 
