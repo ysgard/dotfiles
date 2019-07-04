@@ -6,7 +6,7 @@
 let mapleader = ','
 :inoremap jj <Esc>
 
-nmap <Leader>x :Explore<CR>
+nmap <Leader>x :NERDTreeToggle<CR>
 
 " Buffer navigation
 nmap <Leader>n :bnext<CR>
@@ -15,6 +15,8 @@ nmap <Leader>p :bprev<CR>
 " Tab navigation
 nmap <Leader>N :tabnext<CR>
 nmap <Leader>P :tabprev<CR>
+nnoremap <A-Left> :tabprev<CR>
+nnoremap <A-Right> :tabnext<CR>
 
 " Space key toggles folds
 nnoremap <space> za
