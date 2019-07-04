@@ -112,3 +112,18 @@ let g:LanguageClient_serverCommands = {
 
 " Rust
 let g:rustfmt_autosave = 1
+
+" Word processing mode
+func! WordProcessorMode()
+  setlocal formatoptions=1
+  setlocal noexpandtab
+  map j gj
+  map k gk
+  setlocal spell spelllang=en_us
+  "set thesaurus+=~/.vim/thesaurus/mthesaur.txt
+  set complete+=s
+  set formatprg=par
+  setlocal wrap
+  setlocal linebreak
+endfu
+com! WP call WordProcessorMode()
