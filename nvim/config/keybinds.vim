@@ -34,3 +34,8 @@ nmap <Leader>o <C-w>w
 nmap <Leader>v <C-w>v
 nmap <Leader>s <C-w>s
 
+" LanguageClient
+noremap <silent> H :call LanguageClient_textDocument_hover()<CR>
+noremap <silent> Z :call LanguageClient_textDocument_definition()<CR>
+noremap <silent> R :call LanguageClient_textDocument_rename()<CR>
+noremap <silent> S :call LanguageClient_textDocument_documentSymbol<CR>

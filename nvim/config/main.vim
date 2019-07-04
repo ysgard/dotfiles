@@ -87,7 +87,6 @@ set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules
 " netrw
 let g:netrw_banner = 0
 
-
 " ALE 
 let g:ale_sign_warning = '▲'
 let g:ale_sign_error = '✗'
@@ -101,5 +100,15 @@ let g:rehash256 = 1
 " Rainbow
 let g:rainbow_active = 1
 
+" LanguageClient-neovim
+let g:LanguageClient_autoStart = 1
+nnoremap <leader>lcs :LanguageClientStart<CR>
+let g:LanguageClient_serverCommands = {
+  \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+  \ 'python': ['pyls'],
+  \ 'javascript': ['javascript-typescript-stdio'],
+  \ 'go': ['go-langserver']
+  \ }
+
 " Rust
-let g:autofmt_autosave = 1
+let g:rustfmt_autosave = 1
