@@ -27,6 +27,7 @@ au BufNewFile,BufRead *.rxml    setf ruby
 au BufNewFile,BufRead *.sass    setf sass
 au BufNewFile,BufRead *.ttml    setf xml
 au BufNewFile,BufRead *.tf      setlocal ft=hcl ts=2 sw=2
+au BufWritePost *.tf :silent !{terraform fmt <afile>} | :checktime
 au BufNewFile,BufRead *.txt     setlocal nocindent nosmartindent spell noautoindent tw=78 lbr nolist fo=aw2tq colorcolumn=80 textwidth=80
 au BufNewFile,BufRead *.vert,*.frag set ft=glsl
 au BufNewFile,BufRead *.zsh     setf zsh
