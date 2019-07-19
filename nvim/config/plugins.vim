@@ -29,6 +29,7 @@ Plug 'rhysd/vim-clang-format'
 Plug 'kana/vim-operator-user'
 Plug 'antoyo/vim-licenses'
 
+Plug 'vimoutliner/vimoutliner'
 
 Plug 'fatih/vim-go'
 

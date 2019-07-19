@@ -16,8 +16,7 @@ au BufNewFile,BufRead *.ini     setf conf
 au BufNewFile,BufRead *.input   setf gnuplot
 au BufNewFile,BufRead *.json    set ft=json tw=0
 au BufNewFile,BufRead *.less    setlocal ft=less nocindent smartindent
-au BufNewFile,BufRead *.md      setlocal ft=markdown nolist spell
-au BufNewFile,BufRead *.md,*.markdown setlocal foldlevel=999 tw=0 nocin
+au BufNewFile,BufRead *.md,*.markdown     setlocal ft=markdown nolist spell nocindent nosmartindent noautoindent tw=78 lbr fo=aw2tq colorcolumn=80 textwidth=80 foldlevel=999
 au BufNewFile,BufRead *.ni      setlocal ft=inform nolist ts=2 sw=2 noet
 au BufNewFile,BufRead *.plan    setlocal nospell smartindent cindent autoindent nowrap
 au BufNewFile,BufRead *.plist   setf xml
@@ -27,7 +26,7 @@ au BufNewFile,BufRead *.rxml    setf ruby
 au BufNewFile,BufRead *.sass    setf sass
 au BufNewFile,BufRead *.ttml    setf xml
 au BufNewFile,BufRead *.tf      setlocal ft=hcl ts=2 sw=2
-au BufWritePost *.tf :silent :execute '!terraform fmt <afile>' | :edit
+au BufWritePost *.tf,*.tfvars :silent :execute '!terraform fmt <afile>' | :edit
 au BufNewFile,BufRead *.txt     setlocal nocindent nosmartindent spell noautoindent tw=78 lbr nolist fo=aw2tq colorcolumn=80 textwidth=80
 au BufNewFile,BufRead *.vert,*.frag set ft=glsl
 au BufNewFile,BufRead *.zsh     setf zsh
