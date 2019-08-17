@@ -124,9 +124,12 @@
 ;;;
 ;;; Make Emacs look purdy
 
-(use-package base16-theme
+;; (use-package base16-theme
+;;   :config
+;;   (load-theme 'base16-default-dark t))
+(use-package doom-themes
   :config
-  (load-theme 'base16-default-dark t))
+  (load-theme 'doom-vibrant))
 
 (when (search "pinkiepie" (system-name))
   (defvar ysgard-font-face "Hurmit Nerd Font Medium")
