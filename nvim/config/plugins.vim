@@ -13,6 +13,8 @@ Plug 'iCyMind/NeoSolarized'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'mhartington/oceanic-next'
+Plug 'altercation/vim-colors-solarized'
+
 Plug 'majutsushi/tagbar'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'ervandew/supertab'
