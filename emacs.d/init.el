@@ -47,10 +47,12 @@
 (add-to-list 'load-path (concat init-dir "/ys"))
 (require 'ys-lib)
 
-
 ;;; PACKAGE
 ;;;
 ;;; Set up the package manager (we use use-package)
+
+;; Turn off TLS 1.3 (temporary, I hope, see https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341)
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (setq package-user-dir (concat init-dir "elpa"))
 
