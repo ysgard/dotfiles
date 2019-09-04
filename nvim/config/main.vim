@@ -10,7 +10,7 @@
 set termguicolors
 syntax enable
 set background=dark
-colorscheme oceanicnext
+colorscheme OceanicNext
 
 " General options
 set autoindent                " Carry over indenting from previous line
