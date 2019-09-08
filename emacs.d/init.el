@@ -47,12 +47,10 @@
 (add-to-list 'load-path (concat init-dir "/ys"))
 (require 'ys-lib)
 
+
 ;;; PACKAGE
 ;;;
 ;;; Set up the package manager (we use use-package)
-
-;; Turn off TLS 1.3 (temporary, I hope, see https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341)
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (setq package-user-dir (concat init-dir "elpa"))
 
@@ -134,7 +132,7 @@
   (load-theme 'doom-vibrant))
 
 (when (search "pinkiepie" (system-name))
-  (defvar ysgard-font-face "Hurmit Nerd Font Medium")
+  (defvar ysgard-font-face "Fira Code Medium")
   (defvar ysgard-font-size "10"))
 
 ;; Turn on line numbers, column numbers, and highlight current line
@@ -150,6 +148,17 @@
 (setq use-dialog-box nil) ; We use keys for everything, no mouse if possible
 
 (show-paren-mode t) ; Highlight matching parens
+
+;; Load Fira Code
+(ys/with-system gnu/linux
+  (require 'ys-fira-code))
+(ys/with-system darwin
+  (max-auto-operator-composition-mode))
+
+
+
+
+
 
 ;; Flash mode line when we 'ring the bell'
 (setq ring-bell-function
