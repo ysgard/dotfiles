@@ -1,1 +1,0 @@
-/home/ysgard/.emacs.d/thirdparty/tronesque/themes/tronesque-theme.el
