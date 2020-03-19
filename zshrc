@@ -25,3 +25,7 @@ fi
 if [ -x "$(command -v nvim)" ]; then
   alias vim=nvim
 fi
+
+if [ -f ~/.zshrc-local ]; then
+  source ~/.zshrc-local
+fi

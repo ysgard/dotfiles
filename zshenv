@@ -4,7 +4,7 @@ if [[ -f ~/.secrets ]]; then
 fi
 
 # default editor
-export EDITOR="vim"
+export EDITOR="nvim"
 
 # make sure we use UTF-8
 export LANG=en_US.UTF-8
@@ -12,6 +12,7 @@ export LC_CTYPE=en_US.UTF-8
 
 # Go stuff
 export GOPATH=~/go
+export PATH=$PATH:$GPATH/bin
 
 # Other Exports
 export PATH=~/.local/bin:/usr/local/bin:~/bin:/usr/local/sbin:$PATH
@@ -32,7 +33,9 @@ if [[ -d $HOME/.cargo ]]; then
 fi
 
 # Rbenv
-export PATH=$HOME/.rbenv/bin:$PATH
+if [[ -d $HOME/.rbenv ]]; then
+  export PATH=$HOME/.rbenv/bin:$PATH
+fi
 
 # Load local env file
 if [ -f ~/.zshenv-local ]; then
