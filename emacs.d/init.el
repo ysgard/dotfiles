@@ -135,6 +135,10 @@
   (defvar ysgard-font-face "Fira Code Medium")
   (defvar ysgard-font-size "10"))
 
+(when (search "jvanuytven-macbook-pro" (system-name))
+  (defvar ysgard-font-face "Cascadia Mono PL")
+  (defvar ysgard-font-size "12"))
+
 ;; Turn on line numbers, column numbers, and highlight current line
 (autoload 'linum-mode "linum" "toggle line numbers on/off" t)
 (global-linum-mode t)
@@ -152,13 +156,8 @@
 ;; Load Fira Code
 (ys/with-system gnu/linux
   (require 'ys-fira-code))
-(ys/with-system darwin
-  (max-auto-operator-composition-mode))
-
-
-
-
-
+;;(ys/with-system darwin
+;;  (max-auto-operator-composition-mode))
 
 ;; Flash mode line when we 'ring the bell'
 (setq ring-bell-function
