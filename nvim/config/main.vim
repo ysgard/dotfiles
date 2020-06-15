@@ -9,8 +9,9 @@
 " Display options
 set termguicolors
 syntax enable
-set background=dark
-colorscheme OceanicNext
+" set background=dark
+" colorscheme OceanicNext
+autocmd vimenter * colorscheme gruvbox
 
 " General options
 set autoindent                " Carry over indenting from previous line
