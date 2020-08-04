@@ -9,9 +9,10 @@
 " Display options
 set termguicolors
 syntax enable
-" set background=dark
+set background=dark
 " colorscheme OceanicNext
-autocmd vimenter * colorscheme gruvbox
+colorscheme gruvbox
+" autocmd vimenter * colorscheme gruvbox
 
 " General options
 set autoindent                " Carry over indenting from previous line
@@ -84,6 +85,9 @@ set wildmenu                  " Show possible completions on command line
 set wildmode=list:longest,full  " List all options and complete
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules
                               " Ignore certain files in tab-completion
+
+" Python
+let g:python3_host_prog = '/Users/janvanuytven/.pyenv/versions/neovim3/bin/python'
 
 " netrw
 let g:netrw_banner = 0
