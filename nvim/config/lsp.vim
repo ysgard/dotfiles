@@ -13,7 +13,8 @@ let g:LanguageClient_serverCommands = {
   \ 'python': ['pyls'],
   \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
   \ 'javascript': ['javascript-typescript-stdio'],
-  \ 'go': ['go-langserver']
+  \ 'go': ['go-langserver'],
+  \ 'nim': ['~/.nimble/bin/nimlsp'],
   \ }
 
 noremap <silent> H :call LanguageClient_textDocument_hover()<CR>

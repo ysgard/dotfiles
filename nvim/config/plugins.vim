@@ -40,5 +40,6 @@ Plug 'jistr/vim-nerdtree-tabs'
 
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 
+Plug 'alaviss/nim.nvim'
 call plug#end()
 

@@ -97,6 +97,22 @@ let g:ale_sign_warning = '▲'
 let g:ale_sign_error = '✗'
 highlight link ALEWarningSign String
 highlight link ALEErrorSign Title
+highlight ALEErrorSign ctermbg =NONE ctermfg=red
+highlight ALEWarningSign ctermbg =NONE ctermfg=yellow
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
+
+let g:ale_linters = {
+      \ 'nim': ['nimlsp', 'nimcheck'],
+      \}
+
+let g:ale_fixers = {
+      \ 'nim': ['nimpretty'],
+      \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+      \}
 
 " Molokai
 let g:molokai_original = 1
@@ -104,16 +120,6 @@ let g:rehash256 = 1
 
 " Rainbow
 let g:rainbow_active = 1
-
-" LanguageClient-neovim
-let g:LanguageClient_autoStart = 1
-nnoremap <leader>lcs :LanguageClientStart<CR>
-let g:LanguageClient_serverCommands = {
-  \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-  \ 'python': ['pyls'],
-  \ 'javascript': ['javascript-typescript-stdio'],
-  \ 'go': ['go-langserver']
-  \ }
 
 " Rust
 let g:rustfmt_autosave = 1

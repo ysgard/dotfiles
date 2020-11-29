@@ -37,7 +37,16 @@ if [[ -d $HOME/.rbenv ]]; then
   export PATH=$HOME/.rbenv/bin:$PATH
 fi
 
+# Nim (via choosenim)
+if [[ -d $HOME/.nimble ]]; then
+  export PATH=$HOME/.nimble/bin:$PATH
+fi
+
 # Load local env file
 if [ -f ~/.zshenv-local ]; then
   source ~/.zshenv-local
 fi
+
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then 
+  source $HOME/.nix-profile/etc/profile.d/nix.sh; 
+fi # added by Nix installer
