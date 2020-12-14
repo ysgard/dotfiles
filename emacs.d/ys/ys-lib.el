@@ -13,7 +13,7 @@
 ;;   windows-nt    - Win32
 
 ;;; Code:
-(require 'cl)
+(require 'cl-lib)
 
 (defmacro ys/with-system (type &rest body)
   "Evaluate BODY if `system-type' equals TYPE."
@@ -79,7 +79,7 @@
   (mark-whole-buffer)
   (untabify (region-beginning) (region-end))
   (keyboard-quit))
-  
+
 (defun ys/eshell-here ()
   "Opens up a new shell in the directory associated with the current buffer's file.  The eshell is renamed to match that directory to make multiple eshell windows easier."
   (interactive)
@@ -164,8 +164,8 @@ directory to make multiple eshell windows easier."
   "Returns (up) if we have a network connection, nil otherwise"
   (if (and (functionp 'network-interface-list)
 	   (network-interface-list))
-      (some (lambda (iface) (unless (equal "lo" (car iface))
-			      (member 'up (first (last (network-interface-info
+      (cl-some (lambda (iface) (unless (equal "lo" (car iface))
+			      (member 'up (cl-first (last (network-interface-info
 							(car iface)))))))
 	    (network-interface-list))
     t))

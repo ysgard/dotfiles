@@ -135,11 +135,11 @@
   (load-theme 'gruvbox-dark-medium))
 
 
-(when (search "pinkiepie" (system-name))
+(when (cl-search "pinkiepie" (system-name))
   (defvar ysgard-font-face "Fira Code Medium")
   (defvar ysgard-font-size "10"))
 
-(when (search "jvanuytven-macbook-pro" (system-name))
+(when (cl-search "jvanuytven-macbook-pro" (system-name))
   (defvar ysgard-font-face "Cascadia Mono PL")
   (defvar ysgard-font-size "12"))
 
@@ -215,7 +215,7 @@
 
 ;; Define initial states for certain modes
 ;; Some modes, like Dired and the shell, deal poorly with evil
-(loop for (mode . state) in
+(cl-loop for (mode . state) in
       '((inferior-emacs-lisp-mode . emacs)
         (nrepl-mode . insert)
         (comint-mode . normal)
@@ -473,8 +473,10 @@
 
 ;; Terraform
 (use-package hcl-mode
-  :config (custom-set-variables '(hcl-indent-level 2))
-  :mode "\\.hcl\\'")
+  :config
+  (custom-set-variables '(hcl-indent-level 2))
+  :mode "\\.hcl\\'"
+  :hook (terraform-mode . terraform-format-on-save-mode))
 
 (use-package terraform-mode
   :config (custom-set-variables '(terraform-indent-level 2))
