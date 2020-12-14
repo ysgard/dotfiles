@@ -286,11 +286,12 @@
 ;;; Try to use Company for all autocomplete
 
 (use-package company
-  :demand t
-  :commands company-mode
+  :ensure t
   :config
   (global-company-mode)
   (setq company-global-modes '(not term-mode)) ; no company in terminals
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 1)
   ;; Company default colors look pretty bad in dark mode, use something nicer
   (set-face-foreground 'company-tooltip "#000")
   (set-face-background 'company-tooltip "#ddd")
@@ -430,14 +431,12 @@
 ;;; Language server protocol, general options
 
 (use-package lsp-mode
-  :commands lsp)
+  :ensure t
+  :commands (lsp lsp-deferred))
 
 (use-package lsp-ui
-  :commands lsp-ui-mode
-  :hook (lsp-mode-hook . lsp-ui-mode))
-(use-package company-lsp
-  :commands company-lsp)
-
+  :ensure t
+  :commands lsp-ui-mode)
 
 ;;; LANGUAGES
 ;;;
@@ -448,8 +447,6 @@
 
 (require 'lsp-mode)
 (require 'lsp-ui)
-(require 'company-lsp)
-(push 'company-lsp company-backends)
 
 ;; Python
 
@@ -493,7 +490,21 @@
 (use-package zig-mode
   :mode "\\.zig\\'")
 
+;; Go
+(use-package go-mode
+  :mode "\\.go\\'"
+  :init
+  (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
+  (setq compilation-read-command nil)
+  (add-hook 'go-mode-hook (lambda () (display-line-numbers-mode 1)))
+  :hook ((go-mode . lsp-deferred)
+         (go-mode . yas-minor-mode)))
+  
 
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;;; MISC
 ;;;
@@ -511,6 +522,8 @@
 
 ;; Snippets
 (use-package yasnippet
+  :ensure t
+  :commands yas-minor-mode
   :config
   (setq yas-snippet-dirs
         (append yas-snippet-dirs (concat init-dir "snippets"))) ; personal snippet dir
@@ -573,14 +586,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   (quote
-    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" default)))
+   '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" default))
  '(hcl-indent-level 2)
- '(package-selected-packages (quote (base16-theme use-package)))
- '(tramp-syntax (quote default) nil (tramp)))
+ '(package-selected-packages '(flycheck-nim nim-mode base16-theme use-package))
+ '(tramp-syntax 'default nil (tramp)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+

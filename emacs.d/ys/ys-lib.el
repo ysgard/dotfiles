@@ -201,6 +201,19 @@ directory to make multiple eshell windows easier."
         (kill-buffer buffer)
         (message "File '%s' successfully removed" filename)))))
 
+;; Create a nice compilation window
+(defun ys-compilation-hook ()
+  (when (not (get-buffer-window "*compilation*"))
+    (save-selected-window
+      (save-excursion
+        (let* ((w (split-window-vertically))
+               (h (window-height w)))
+          (select-window w)
+          (switch-to-buffer "*compilation*")
+          (shrink-window (- h compilation-window-height)))))))
+
+
+
 
 (provide 'ys-lib)
 ;;; ys-lib.el ends here

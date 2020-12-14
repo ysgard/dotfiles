@@ -12,7 +12,9 @@ export LC_CTYPE=en_US.UTF-8
 
 # Go stuff
 export GOPATH=~/go
-export PATH=$PATH:$GPATH/bin
+export GOBIN=~/go/bin
+#export GO111MODULE=on
+export PATH=$PATH:$GOPATH/bin
 
 # Other Exports
 export PATH=~/.local/bin:/usr/local/bin:~/bin:/usr/local/sbin:$PATH
@@ -47,6 +49,6 @@ if [ -f ~/.zshenv-local ]; then
   source ~/.zshenv-local
 fi
 
-if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then 
-  source $HOME/.nix-profile/etc/profile.d/nix.sh; 
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
+  source $HOME/.nix-profile/etc/profile.d/nix.sh;
 fi # added by Nix installer

@@ -1,9 +1,7 @@
-export ZSH=$HOME/.oh-my-zsh
-
 ZSH_THEME="robbyrussell"
 plugins=(aws bundler cargo docker docker-compose emacs gem git git-extras github gitignore kitchen knife knife_ssh kubectl npm osx rails rake rbenv ruby rust screen terraform sudo yarn)
 
-source $ZSH/oh-my-zsh.sh
+source $HOME/.oh-my-zsh/oh-my-zsh.sh
 eval "$(rbenv init -)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
