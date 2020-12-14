@@ -497,6 +497,7 @@
   (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
   (setq compilation-read-command nil)
   (add-hook 'go-mode-hook (lambda () (display-line-numbers-mode 1)))
+  :bind ("C-c b" . compile)
   :hook ((go-mode . lsp-deferred)
          (go-mode . yas-minor-mode)))
   
@@ -572,7 +573,7 @@
 
 
 (global-set-key (kbd "C-x C-r") 'ys/rename-current-buffer-file)
-
+           
 
 
 
