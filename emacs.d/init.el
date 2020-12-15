@@ -473,8 +473,10 @@
 
 ;; Terraform
 (use-package hcl-mode
-  :config (custom-set-variables '(hcl-indent-level 2))
-  :mode "\\.hcl\\'")
+  :config
+  (custom-set-variables '(hcl-indent-level 2))
+  :mode "\\.hcl\\'"
+  :hook (terraform-mode . terraform-format-on-save-mode))
 
 (use-package terraform-mode
   :config (custom-set-variables '(terraform-indent-level 2))
