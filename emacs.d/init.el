@@ -359,7 +359,7 @@
   :hook ((dired-mode . dired-icon-mode)))
 
 
-  
+
 ;;; MAGIT
 ;;;
 ;;; Superior git-mode
@@ -424,7 +424,7 @@
         deft-recursive t)
   :commands (deft)
   :bind ("<f8>" . deft))
-  
+
 
 ;;; LSP
 ;;;
@@ -500,7 +500,7 @@
   :bind ("C-c b" . compile)
   :hook ((go-mode . lsp-deferred)
          (go-mode . yas-minor-mode)))
-  
+
 
 (defun lsp-go-install-save-hooks ()
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
@@ -516,7 +516,7 @@
   :commands (treemacs)
   ;; Rebind k/j and / to match vim, because the buffer reacts poorly with evil in general
   :hook (treemacs-mode . (lambda ()
-                           (progn 
+                           (progn
                              (local-set-key (kbd "k") #'treemacs-previous-line)
                              (local-set-key (kbd "j") #'treemacs-next-line)
                              (local-set-key (kbd "/") #'isearch-forward-regexp)))))
@@ -530,7 +530,7 @@
         (append yas-snippet-dirs (concat init-dir "snippets"))) ; personal snippet dir
   (yas-global-mode t))
 (use-package yasnippet-snippets)
-        
+
 ;; Cleaner mode line
 (use-package rich-minority
   :commands rich-minority-mode
@@ -550,6 +550,17 @@
         sml/mode-width 'full)
   :config
   (sml/setup))
+
+
+;; Crux - very useful commands
+;; See https://github.com/bbatsov/crux
+(use-package crux)
+
+
+;; Avy - jumpt to visible text with chars
+(use-package avy
+  :bind (("C-:" . avy-goto-char)
+         ("C-'" . avy-goto-char-2)))
 
 ;;; KEYBINDS
 ;;;
@@ -573,13 +584,13 @@
 
 
 (global-set-key (kbd "C-x C-r") 'ys/rename-current-buffer-file)
-           
+
 
 
 
 ;;; init.el ends here
-  
-		      
+
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -597,4 +608,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
