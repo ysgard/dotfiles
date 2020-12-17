@@ -118,6 +118,9 @@
 (when (memq window-system '(mac ns x))
   (exec-path-from-shell-initialize))
 
+;; Trim whitespace on save, always new line at EOF
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq require-final-newline t)
 
 
 ;;; DISPLAY
@@ -473,10 +476,8 @@
 
 ;; Terraform
 (use-package hcl-mode
-  :config
-  (custom-set-variables '(hcl-indent-level 2))
-  :mode "\\.hcl\\'"
-  :hook (terraform-mode . terraform-format-on-save-mode))
+  :config (custom-set-variables '(hcl-indent-level 2))
+  :mode "\\.hcl\\'")
 
 (use-package terraform-mode
   :config (custom-set-variables '(terraform-indent-level 2))
