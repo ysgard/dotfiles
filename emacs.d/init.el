@@ -510,6 +510,11 @@
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
+;; Lua
+(use-package lua-mode
+  :mode "\\.lua$\\'"
+  :config (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
+
 ;;; MISC
 ;;;
 ;;; Miscellaneous tweaks and extensions go here
