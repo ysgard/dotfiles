@@ -30,9 +30,9 @@ Plug 'hashivim/vim-terraform'
 Plug 'rhysd/vim-clang-format'
 Plug 'kana/vim-operator-user'
 Plug 'antoyo/vim-licenses'
-
+Plug 'elixir-editors/vim-elixir'
+Plug 'mattreduce/vim-mix'
 Plug 'vimoutliner/vimoutliner'
-
 Plug 'fatih/vim-go'
 
 Plug 'scrooloose/nerdtree'
@@ -42,4 +42,3 @@ Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.s
 
 Plug 'alaviss/nim.nvim'
 call plug#end()
-

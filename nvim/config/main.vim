@@ -38,6 +38,8 @@ set fileformats=unix,dos,mac  " Prefer unix
 set fillchars=vert:\ ,stl:\ ,stlnc:\ ,fold:-,diff:┄
                               " Unicode chars for diffs/folds, and rely on
                               " Colors for window borders
+filetype plugin indent on     " Enables filetype detection, loads ftplugin,
+                              " and loads indent
 silent! set foldmethod=marker " Use braces by default
 set formatoptions=tcqn1       " t - autowrap normal text
                               " c - autowrap comments
