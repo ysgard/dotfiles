@@ -31,16 +31,16 @@
 
 ;; Bail if we're not running a modern version of Emacs
 
-(when (< emacs-major-version 26)
+(when (< emacs-major-version 27)
   (x-popup-dialog
-   t `(,(format "Version 26 of Emacs required! You have version %s" (emacs-version))
+   t `(,(format "Version 27 of Emacs required! You have version %s" (emacs-version))
        ("OK" . t)))
   (save-buffers-kill-emacs t))
 
 ;; Set some base information
 
 (setq user-full-name "Jan Van Uytven")
-(setq user-mail-address "ysgard@gmail.com")
+(setq user-mail-address "ysgard@ysgard.net")
 (setq init-dir (file-name-directory
 		(or (buffer-file-name) (file-chase-links load-file-name))))
 
@@ -70,6 +70,12 @@
 ;; Auto-install declared packages
 (setq use-package-always-ensure t)
 
+;; Automatic update every 4 days
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t
+        auto-package-update-interval 4)
+  (auto-package-update-maybe))
 
 ;;; BASE CONFIGURATION
 ;;;
@@ -232,8 +238,7 @@
         (dired-mode . normal)
         (ibuffer-mode . normal)
         (wdired-mode . normal)
-        (treemacs-mode . emacs)
-        (rustic-popup-mode . emacs))
+        (treemacs-mode . emacs))
       do (evil-set-initial-state mode state))
 
 ;;; IDO
@@ -289,12 +294,13 @@
 ;;; Try to use Company for all autocomplete
 
 (use-package company
-  :ensure t
   :config
   (global-company-mode)
   (setq company-global-modes '(not term-mode)) ; no company in terminals
-  (setq company-idle-delay 0)
+  (setq company-idle-delay 0.5) ;; How long to wait for popup
+  ;; (company-begin-commands nil) ;; Uncomment to disable popup
   (setq company-minimum-prefix-length 1)
+  (setq company-tooltip-align-annotations t)
   ;; Company default colors look pretty bad in dark mode, use something nicer
   (set-face-foreground 'company-tooltip "#000")
   (set-face-background 'company-tooltip "#ddd")
@@ -304,7 +310,43 @@
   (set-face-foreground 'company-tooltip-common "#9a0000")
   (set-face-foreground 'company-tooltip-common-selection "#9a0000")
   (set-face-foreground 'company-tooltip-annotation "#00008e")
-  :diminish company-mode)
+  :hook (prog-mode . company-mode)
+  :bind
+  (:map company-active-map
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)
+        ("M-<" . company-select-first)
+        ("M->" . company-select-last))
+  (:map company-mode-map
+        ("<tab>" . tab-indent-or-complete)
+        ("TAB" . tab-indent-or-complete)))
+
+(defun company-yasnippet-or-completion ()
+  (interactive)
+  (or (do-yas-expand)
+      (company-complete-common)))
+
+(defun check-expansion ()
+  (save-excursion
+    (if (looking-at "\\_>") t
+      (backward-char 1)
+      (if (looking-at "\\.") t
+        (backward-char 1)
+        (if (looking-at "::") t nil)))))
+
+(defun do-yas-expand ()
+  (let ((yas/fallback-behavior 'return-nil))
+    (yas/expand)))
+
+(defun tab-indent-or-complete ()
+  (interactive)
+  (if (minibufferp)
+      (minibuffer-complete)
+    (if (or (not yas/minor-mode)
+            (null (do-yas-expand)))
+        (if (check-expansion)
+            (company-complete-common)
+          (indent-for-tab-command)))))
 
 (use-package company-quickhelp
   :after (company)
@@ -324,9 +366,7 @@
 
 (use-package flycheck
   :config
-  ;; Don't enable flycheck for elisp, it's dumb
-  :hook (find-file-hook . (lambda () (when (not (equal 'emacs-lisp-mode major-mode))
-                                         (flycheck-mode)))))
+  :hook (prog-mode . flycheck-mode))
 
 ;; Turn the modeline red when flycheck spots errors
 (use-package flycheck-color-mode-line
@@ -382,7 +422,6 @@
 ;;; Ultimate note-taking
 
 (use-package org
-  :ensure org-plus-contrib
   :config
   ;; Stop org-mode from hijacking shift-cursor key
   (setq org-replace-disputed-keys t)
@@ -399,7 +438,7 @@
 (use-package ox-reveal)
 
 ;; Org-brain (https://github.com/Kungsgeten/org-brain)
-(use-package org-brain :ensure t
+(use-package org-brain
   :after (org)
   :init
   (setq org-brain-path "~/Notes")
@@ -434,12 +473,23 @@
 ;;; Language server protocol, general options
 
 (use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred))
+  :config
+  :commands lsp
+  :custom
+  ;; What to run when checking on-save. "check" is the default, prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode)
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
 
 ;;; LANGUAGES
 ;;;
@@ -448,8 +498,6 @@
 ;; C, C++, Objective-C
 ;;
 
-(require 'lsp-mode)
-(require 'lsp-ui)
 
 ;; Python
 
@@ -469,10 +517,18 @@
   :hook (ruby-mode . inf-ruby-minor-mode))
 
 ;; Rust
-(add-hook 'rust-mode-hook #'lsp)
-(use-package rustic
+(use-package rust-mode
   :config
-  (setq rustic-lsp-server 'rust-analyzer))
+  (setq rust-format-on-save t))
+
+(use-package toml-mode)
+
+(use-package cargo
+  :diminish cargo-minor-mode
+  :hook (rust-mode . cargo-minor-mode))
+
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 ;; Terraform
 (use-package hcl-mode
@@ -493,28 +549,6 @@
 (use-package zig-mode
   :mode "\\.zig\\'")
 
-;; Go
-(use-package go-mode
-  :mode "\\.go\\'"
-  :init
-  (setq compile-command "echo Building... && go build -v && echo Testing... && go test -v && echo Linter... && golint")
-  (setq compilation-read-command nil)
-  (add-hook 'go-mode-hook (lambda () (display-line-numbers-mode 1)))
-  :bind ("C-c b" . compile)
-  :hook ((go-mode . lsp-deferred)
-         (go-mode . yas-minor-mode)))
-
-
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-
-;; Lua
-(use-package lua-mode
-  :mode "\\.lua$\\'"
-  :config (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
-
 ;;; MISC
 ;;;
 ;;; Miscellaneous tweaks and extensions go here
@@ -531,12 +565,12 @@
 
 ;; Snippets
 (use-package yasnippet
-  :ensure t
-  :commands yas-minor-mode
   :config
+  (yas-reload-all)
   (setq yas-snippet-dirs
         (append yas-snippet-dirs (concat init-dir "snippets"))) ; personal snippet dir
-  (yas-global-mode t))
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
+  (add-hook 'text-mode-hook 'yas-minor-mode))
 (use-package yasnippet-snippets)
 
 ;; Cleaner mode line
@@ -588,8 +622,6 @@
 (define-key evil-motion-state-map (kbd "SPC m") 'magit-status)
 (define-key evil-motion-state-map (kbd "SPC d") 'dired-jump)
 (define-key evil-motion-state-map (kbd "SPC x") 'treemacs)
-(define-key evil-motion-state-map (kbd "SPC c r") 'rustic-popup)
-
 
 (global-set-key (kbd "C-x C-r") 'ys/rename-current-buffer-file)
 
@@ -608,7 +640,8 @@
  '(custom-safe-themes
    '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" default))
  '(hcl-indent-level 2)
- '(package-selected-packages '(flycheck-nim nim-mode base16-theme use-package))
+ '(package-selected-packages
+   '(arch-packer flycheck-nim nim-mode base16-theme use-package))
  '(tramp-syntax 'default nil (tramp)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

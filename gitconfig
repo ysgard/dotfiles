@@ -24,6 +24,8 @@
 	cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
 [push]
   default = simple
+[pull]
+  rebase = false
 [alias]
   conflicts = diff --name-only --diff-filter=U 
 	lg = log --color --graph --pretty=format:'%C(red)%h -%C(yellow)%d  %C(white)%s %C(green)(%cr) %C(bold blue)<%an>%Creset'
