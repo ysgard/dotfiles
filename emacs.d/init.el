@@ -474,22 +474,16 @@
 
 (use-package lsp-mode
   :config
-  :commands lsp
-  :custom
-  ;; What to run when checking on-save. "check" is the default, prefer clippy
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-eldoc-render-all t)
-  (lsp-idle-delay 0.6)
-  (lsp-rust-analyzer-server-display-inlay-hints t)
-  :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  (setq lsp-prefer-capf t)
+  (setq lsp-completion-provider :capf)
+  (setq lsp-completion-enable t)
+  :hook
+  (lsp-mode . lsp-ui-mode)
+  (rust-mode . lsp))
+
 
 (use-package lsp-ui
-  :commands lsp-ui-mode
-  :custom
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil))
+  :commands lsp-ui-mode)
 
 ;;; LANGUAGES
 ;;;
